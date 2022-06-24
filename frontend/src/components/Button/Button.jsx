@@ -1,11 +1,11 @@
 import React from 'react';
 
-function Header() {
+function Button() {
   return (
     <div>
-      <h3>Header</h3>
+      Button
     </div>
   );
 }
 
-export default Header;
+export default Button;

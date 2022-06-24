@@ -1,5 +1,3 @@
-/* eslint-disable dot-notation */
-/* eslint-disable no-param-reassign */
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -11,13 +9,14 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(async (config) => {
   const token = localStorage.getItem('jwt_token');
-  config.headers = {
+  const clonedConfig = { ...config };
+  clonedConfig.headers = {
     'Content-Type': 'application/json',
   };
   if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`;
+    clonedConfig.headers['Authorization'] = `Bearer ${token}`;
   }
-  return config;
+  return clonedConfig;
 });
 
 axiosInstance.interceptors.response.use(
@@ -28,24 +27,28 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    const statusCode = error.response.status;
+    const statusCode = error?.response?.status;
     if (statusCode === 404) {
       window.location.href = '/not-found';
       return;
     }
+
     if (statusCode === 401) {
       window.location.href = '/login';
       return;
     }
+
     if (statusCode === 403) {
       window.location.href = '/forbidden';
       return;
     }
+
     if (statusCode === 500) {
       // show notification
       toast.error('System has an error');
-      return;
+      console.log('error', error);
     }
+
     throw error;
   },
 );

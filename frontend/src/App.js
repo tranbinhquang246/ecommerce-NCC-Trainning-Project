@@ -1,25 +1,45 @@
-import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import { routes } from "./const";
-import { MainLayout } from "./layouts";
-import { Footer, Header, Sidebar } from "./components";
+import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import ExamplePage from './pages/Example';
+import Header from './components/Header';
+import SideBar from './components/Sidebar';
+import OverlayProvider from './context/OverlayContext';
+
+const routes = [
+  {
+    path: ['/'],
+    exact: true,
+    component: ExamplePage,
+  },
+
+  {
+    path: '/example',
+    component: ExamplePage,
+  },
+];
 
 function App() {
   return (
-    <MainLayout>
+    <OverlayProvider>
       <Header />
       <Router>
-        <Sidebar />
+        <SideBar />
         <Switch>
           {routes.map((route) => (
-            <Route key={route.path} {...route} />
+            <Route
+              key={route.path}
+              {...route}
+            />
           ))}
         </Switch>
       </Router>
-      <Footer />
       <ToastContainer />
-    </MainLayout>
+    </OverlayProvider>
   );
 }
 
