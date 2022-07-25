@@ -1,7 +1,7 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import BounceLoader from 'react-spinners/BounceLoader';
-import { Loading, Spinner } from './styles';
 
 const OverLayContext = React.createContext({});
 
@@ -16,11 +16,11 @@ function OverlayProvider(props) {
       }}
     >
       {loading && (
-        <Loading>
-          <Spinner>
+        <div className="fixed left-0 top-0 w-screen h-screen bg-[#00000080] flex items-center justify-center z-[1301]">
+          <div className="w-[100px] h-[100px] flex flex-col items-center">
             <BounceLoader color="#fff" loading={loading} size={50} />
-          </Spinner>
-        </Loading>
+          </div>
+        </div>
       )}
       {children}
     </OverLayContext.Provider>

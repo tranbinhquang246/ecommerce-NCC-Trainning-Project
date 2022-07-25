@@ -1,44 +1,29 @@
 import './App.css';
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
+  BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import ExamplePage from './pages/Example';
-import Header from './components/Header';
-import SideBar from './components/Sidebar';
+import Error from './components/Error/Error';
+import Home from './pages/Mainpage/Home';
+import Products from './components/Products/Products';
+import ProductManagement from './components/Products/ProductsManagement';
 import OverlayProvider from './context/OverlayContext';
-
-const routes = [
-  {
-    path: ['/'],
-    exact: true,
-    component: ExamplePage,
-  },
-
-  {
-    path: '/example',
-    component: ExamplePage,
-  },
-];
+import 'antd/dist/antd.min.css';
 
 function App() {
   return (
     <OverlayProvider>
-      <Header />
-      <Router>
-        <SideBar />
-        <Switch>
-          {routes.map((route) => (
-            <Route
-              key={route.path}
-              {...route}
-            />
-          ))}
-        </Switch>
-      </Router>
-      <ToastContainer />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}>
+            <Route index element={<Products />} />
+            <Route path="/management" element={<ProductManagement />} />
+            <Route path="*" element={<Error />} />
+          </Route>
+          <Route path="/products" element={<Navigate replace to="/" />} />
+        </Routes>
+      </BrowserRouter>
+      <ToastContainer />;
     </OverlayProvider>
   );
 }
