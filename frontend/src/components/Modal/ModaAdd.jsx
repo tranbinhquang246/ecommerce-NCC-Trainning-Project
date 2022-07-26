@@ -10,10 +10,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { IconContext } from 'react-icons';
 import {
-  Form, Input, InputNumber, Select, Upload, Modal,
+  Form, Input, Select, Upload, Modal, InputNumber,
 } from 'antd';
 import { RiCloseCircleFill } from 'react-icons/ri';
 import { PlusOutlined } from '@ant-design/icons';
+import validate from '../../validateForm/validatePrice';
 
 const getBase64 = (file) => new Promise((resolve, reject) => {
   const reader = new FileReader();
@@ -75,7 +76,7 @@ function ModaAdd({ setOpenModalAdd }) {
   };
   const handleCancel = () => setPreviewVisible(false);
 
-  const handleSelect = (key, value) => {
+  const handleSelect = (_, value) => {
     setBrand(brands[value.key]);
   };
   const { TextArea } = Input;
@@ -94,6 +95,7 @@ function ModaAdd({ setOpenModalAdd }) {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
   return (
     <>
       <div className="absolute flex justify-center items-center w-screen h-screen bg-black z-0 opacity-50" />
@@ -115,9 +117,9 @@ function ModaAdd({ setOpenModalAdd }) {
               className="w-[300px] lg:w-[500px]"
               name="basic"
               layout="vertical"
-              initialValues={{
-                price: 100000,
-              }}
+              //   initialValues={{
+              //     price: 100000,
+              //   }}
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="off"
@@ -125,7 +127,14 @@ function ModaAdd({ setOpenModalAdd }) {
               <Form.Item
                 label="Tên sản phẩm"
                 name="name"
-                rules={[{ required: true, message: 'Hãy điền tên sản phẩm' }]}
+                rules={[
+                  { required: true, message: 'Hãy điền tên sản phẩm' },
+                  {
+                    message: 'Không chứa các kí tự đặc biệt',
+                    validator: validate.validateName,
+                  },
+                ]}
+                validateTrigger="onBlur"
               >
                 <Input />
               </Form.Item>
@@ -148,7 +157,7 @@ function ModaAdd({ setOpenModalAdd }) {
               <Form.Item
                 label="Hãng sản xuất"
                 name="brand"
-                rules={[{ required: true, message: 'Hãy chọn hãng sản xuất' }]}
+                rules={[{ required: true, message: 'Hãy chọn một danh mục sản phẩm' }]}
               >
                 <Select placeholder="Chọn hãng sản xuất">
                   {brand?.map((element, index) => (
@@ -159,20 +168,53 @@ function ModaAdd({ setOpenModalAdd }) {
                 </Select>
               </Form.Item>
               <Form.Item
-                label="Giá"
+                label="Price"
                 name="price"
-                rules={[{ required: true, message: 'hãy nhập giá của sản phẩm' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Hãy điền tên sản phẩm',
+                  },
+                  {
+                    message: 'Tối thiểu 10000',
+                    validator: validate.validatePriceMinimum,
+                  },
+                  {
+                    message: 'Tối đa 1000000000',
+                    validator: validate.validatePriceMaximum,
+                  },
+                  {
+                    message: 'Không được phép nhập số âm',
+                    validator: validate.validatePriceNegative,
+                  },
+                ]}
+                validateTrigger="onBlur"
               >
-                <InputNumber style={{ width: 400 }} min="10000" max="1000000000" step="1" />
+                <InputNumber style={{ width: '100%' }} />
               </Form.Item>
-              <Form.Item label="Mô tả" name="description">
-                <TextArea rows={4} maxLength={500} />
+              <Form.Item
+                label="Mô tả"
+                name="description"
+                rules={[
+                  {
+                    message: 'Không quá 500 kí tự',
+                    validator: validate.validateDesciption,
+                  },
+                ]}
+              >
+                <TextArea rows={4} />
               </Form.Item>
               <Form.Item
                 name="upload"
                 label="Upload"
-                valuePropName="fileList"
+                valuePropName="mainImg"
                 getValueFromEvent={normFile}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Vui lòng chọn 1 bức ảnh',
+                  },
+                ]}
               >
                 <Upload
                   listType="picture-card"
