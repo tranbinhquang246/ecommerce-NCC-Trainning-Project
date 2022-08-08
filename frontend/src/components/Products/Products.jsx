@@ -1,14 +1,41 @@
+/* eslint-disable no-console */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
+import { useSearchParams } from 'react-router-dom';
+import axios from '../../api/axios';
+import ViewProduct from './ViewProduct';
 
 function Products() {
+  const [dataProducts, setDataProducts] = useState([]);
+  const [searchParams] = useSearchParams();
+  const ruleAdmin = false;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}products?category=${
+            searchParams.get('category') || ''
+          }&brand=${searchParams.get('brand') || ''}&page=${searchParams.get('page') || '1'}`,
+        );
+        setDataProducts(response);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error.message);
+      }
+    };
+    fetchData();
+  }, [searchParams]);
+
   const handleChangeSearch = (e) => {
     console.log(e.target.value);
   };
-
   return (
-    <div className="flex justify-center items-center w-full h-full">
+    <div className="flex justify-center items-center w-full h-full bg-slate-200">
       <div className="flex flex-col w-10/12 h-divproduct">
         <div className="flex justify-end items-center w-full h-divsearch">
           <form className="flex items-center" onChange={handleChangeSearch}>
@@ -30,7 +57,11 @@ function Products() {
             </div>
           </form>
         </div>
-        <div className="flex justify-between items-center w-full h-full bg-slate-400 mt-5 rounded-md" />
+        <ViewProduct
+          dataProducts={dataProducts}
+          setDataProducts={setDataProducts}
+          ruleAdmin={ruleAdmin}
+        />
       </div>
     </div>
   );

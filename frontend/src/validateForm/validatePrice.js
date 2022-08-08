@@ -18,7 +18,7 @@ const validate = {
     return Promise.resolve();
   },
   validateName: (_, value) => {
-    const format = /[ `!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?~]/;
+    const format = /[`!@#$%^&*()_+=\\[\]{};':"\\|,.<>\\/?~]/;
     if (format.test(value)) {
       return Promise.reject();
     }

@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsNotEmpty,
   IsNumber,
@@ -26,13 +27,10 @@ export class CreateProductDto {
   @IsInt()
   @Min(10000, { message: 'Number min 10000 ' })
   @Max(1000000000, { message: 'Number max 1000000000' })
+  @Transform(({ value }) => Number.parseInt(value))
   price: number;
 
   @IsString()
   @MaxLength(500, { message: 'Must be at least 500 characters' })
   description: string;
-
-  @IsString()
-  @IsNotEmpty()
-  mainImg: string;
 }

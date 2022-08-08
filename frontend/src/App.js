@@ -9,6 +9,7 @@ import Products from './components/Products/Products';
 import ProductManagement from './components/Products/ProductsManagement';
 import OverlayProvider from './context/OverlayContext';
 import 'antd/dist/antd.min.css';
+import ProductDetail from './components/Products/ProductDetail';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />}>
             <Route index element={<Products />} />
             <Route path="/management" element={<ProductManagement />} />
+            <Route path="/product/:productID" element={<ProductDetail />} />;
             <Route path="*" element={<Error />} />
           </Route>
           <Route path="/products" element={<Navigate replace to="/" />} />
