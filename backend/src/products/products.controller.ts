@@ -3,15 +3,17 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Post,
   Put,
   Query,
   Res,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import {
@@ -75,7 +77,6 @@ export class ProductsController {
     @Body() createProductDto: CreateProductDto,
     @Res() response,
   ): Promise<Product> {
-    console.log(mainImg);
     return this.productServices.createProduct(
       mainImg,
       createProductDto,
@@ -84,13 +85,16 @@ export class ProductsController {
   }
 
   @Put(':productId')
-  async updateproduct(
+  @UseInterceptors(FilesInterceptor('img[]', 5, multerOptions))
+  async updateProduct(
+    @UploadedFiles() img: Array<Express.Multer.File>,
     @Res() response,
     @Param('productId') productId: string,
     @Body() updateProductDto: UpdateProductsDto,
-  ) {
+  ): Promise<Product> {
     return this.productServices.updateProduct(
       productId,
+      img,
       updateProductDto,
       response,
     );
@@ -99,11 +103,5 @@ export class ProductsController {
   @Delete(':productId')
   async remove(@Param('productId') productId: string, @Res() response) {
     return this.productServices.deleteProduct(productId, response);
-  }
-
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('mainPic', multerOptions))
-  uploadFile(@UploadedFile() mainPic: Express.Multer.File) {
-    console.log(mainPic);
   }
 }

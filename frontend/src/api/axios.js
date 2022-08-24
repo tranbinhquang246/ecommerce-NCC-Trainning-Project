@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -28,6 +28,13 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     const statusCode = error?.response?.status;
+    // const message = error?.response?.data?.message;
+    if (statusCode === 400) {
+      alert('hsdhhd');
+      window.location.href = '/bad-request';
+      return;
+    }
+
     if (statusCode === 404) {
       window.location.href = '/not-found';
       return;
@@ -44,9 +51,8 @@ axiosInstance.interceptors.response.use(
     }
 
     if (statusCode === 500) {
-      // show notification
-      toast.error('System has an error');
-      console.log('error', error);
+      window.location.href = '/err-server';
+      return;
     }
 
     throw error;

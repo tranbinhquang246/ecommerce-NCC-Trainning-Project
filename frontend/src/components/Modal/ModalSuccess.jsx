@@ -1,22 +1,35 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Modal } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '../../assets/deleteIcon.png';
 import SusscessIcon from '../../assets/successIcon.png';
 
 function ModalSuccess(props) {
-  const { rule, isModalSuccessVisible, setIsModalSuccessVisible } = props;
+  const {
+    rule, idProduct, isModalSuccessVisible, setIsModalSuccessVisible,
+  } = props;
+  const navigate = useNavigate();
 
-  const handleOk = () => {
+  const handleAddOk = () => {
+    navigate(`/product/${idProduct}`);
     setIsModalSuccessVisible(false);
   };
-
-  const handleCancel = () => {
+  const handleUpdateOk = () => {
+    navigate(`/product/${idProduct}`);
+    setIsModalSuccessVisible(false);
+  };
+  const handleDeleteOk = async () => {
     setIsModalSuccessVisible(false);
   };
   if (rule === 'add') {
     return (
-      <Modal visible={isModalSuccessVisible} onOk={handleOk} onCancel={handleCancel} footer={null}>
+      <Modal
+        visible={isModalSuccessVisible}
+        onOk={handleAddOk}
+        onCancel={handleAddOk}
+        footer={null}
+      >
         <div className="flex flex-col justify-center items-center mt-10 mb-5">
           <img src={SusscessIcon} alt="deleteicon" className="w-1/5" />
           <div className="flex mt-7 text-xs">
@@ -26,8 +39,31 @@ function ModalSuccess(props) {
       </Modal>
     );
   }
+  if (rule === 'update') {
+    return (
+      <Modal
+        visible={isModalSuccessVisible}
+        onOk={handleUpdateOk}
+        onCancel={handleUpdateOk}
+        footer={null}
+      >
+        <div className="flex flex-col justify-center items-center mt-10 mb-5">
+          <img src={SusscessIcon} alt="deleteicon" className="w-1/5" />
+          <div className="flex mt-7 text-xs">
+            <strong className="text-base">Cập nhật sản phẩm thành công</strong>
+          </div>
+        </div>
+      </Modal>
+    );
+  }
+
   return (
-    <Modal visible={isModalSuccessVisible} onOk={handleOk} onCancel={handleCancel} footer={null}>
+    <Modal
+      visible={isModalSuccessVisible}
+      onOk={handleDeleteOk}
+      onCancel={handleDeleteOk}
+      footer={null}
+    >
       <div className="flex flex-col justify-center items-center mt-10 mb-5">
         <img src={DeleteIcon} alt="deleteicon" className="w-1/5" />
         <div className="flex mt-7 text-xs">

@@ -14,6 +14,7 @@ import {
   RecommendProducts,
 } from './dto';
 import { Product, ProductDocument } from './schema/product.schema';
+import fs = require('fs');
 
 @Injectable()
 export class ProductsService {
@@ -32,8 +33,6 @@ export class ProductsService {
         category ? { category: category } : {},
       ],
     };
-    console.log(filter);
-    console.log(page);
     const productsCount = await this.productModel.find(filter).count().exec();
     const totalPage = Math.ceil(productsCount / limit);
     const findProduct = await this.productModel
@@ -98,6 +97,7 @@ export class ProductsService {
     const picturePath = `${process.env.URL_PICTURE}${mainImg.filename}`;
     const newProduct = new this.productModel(createProductDto);
     newProduct.mainImg = picturePath;
+    newProduct.slidesImg = [null, null, null, null];
     const createProduct = await newProduct.save();
     if (!createProduct) {
       throw new BadRequestException(`Request Failed`);
@@ -110,25 +110,93 @@ export class ProductsService {
     if (!deletedProduct) {
       throw new NotFoundException(`Product #${productId} does not exist`);
     }
-
+    // fs.unlinkSync(`uploads/${deletedProduct.ma}`);
+    const mainImg = deletedProduct.mainImg;
+    const slidesImg = deletedProduct.slidesImg;
+    fs.unlinkSync(`uploads/${mainImg.substring(mainImg.lastIndexOf('/') + 1)}`);
+    slidesImg.map((element) => {
+      if (element) {
+        fs.unlinkSync(
+          `uploads/${element.substring(element.lastIndexOf('/') + 1)}`,
+        );
+      }
+    });
     return response.status(HttpStatus.OK).send(deletedProduct);
   }
 
+  getSetPicturesWillUpdate(_files: Array<Express.Multer.File>, pictureAction) {
+    const setPicturesWillUpdate = {};
+    let fileSetCounter = 0;
+    if (pictureAction[0] === 'update') {
+      const newKey = `mainImg`;
+      const newValue = `${process.env.URL_PICTURE}${_files[fileSetCounter].filename}`;
+      fileSetCounter++;
+      Object.assign(setPicturesWillUpdate, {
+        [newKey]: newValue,
+      });
+    }
+
+    for (let index = 1; index < pictureAction.length; index++) {
+      if (pictureAction[index] === 'update') {
+        const newKey = `slidesImg.${index - 1}`;
+        const newValue = `${process.env.URL_PICTURE}${_files[fileSetCounter].filename}`;
+        fileSetCounter++;
+        Object.assign(setPicturesWillUpdate, {
+          [newKey]: newValue,
+        });
+      } else if (pictureAction[index] === 'delete') {
+        const newKey = `slidesImg.${index - 1}`;
+        Object.assign(setPicturesWillUpdate, { [newKey]: '' });
+      }
+    }
+    return setPicturesWillUpdate;
+  }
+  async deleteImg(productId, poisition) {
+    const findProduct = await this.productModel.findById(productId);
+    const mainImg = findProduct.mainImg;
+    const slidesImg = findProduct.slidesImg;
+    if (poisition[0] === 'update') {
+      fs.unlinkSync(
+        `uploads/${mainImg.substring(mainImg.lastIndexOf('/') + 1)}`,
+      );
+    }
+    for (let index = 1; index < poisition.length; index++) {
+      if (poisition[index] === 'update' || poisition[index] === 'delete') {
+        if (slidesImg[index - 1]) {
+          fs.unlinkSync(
+            `uploads/${slidesImg[index - 1].substring(
+              slidesImg[index - 1].lastIndexOf('/') + 1,
+            )}`,
+          );
+        }
+      }
+    }
+  }
   async updateProduct(
     productId: string,
+    img: Array<Express.Multer.File>,
     updateProductDto: UpdateProductsDto,
     @Res() response,
   ) {
-    const updateStudent = await this.productModel.findByIdAndUpdate(
+    let poisition: string[] = [];
+    poisition = [...updateProductDto.poisitions];
+    const setPicturesWillUpdate = this.getSetPicturesWillUpdate(img, poisition);
+    this.deleteImg(productId, poisition);
+    const updateProduct = await this.productModel.findByIdAndUpdate(
       productId,
-      updateProductDto,
+      {
+        name: updateProductDto.name,
+        category: updateProductDto.category,
+        brand: updateProductDto.brand,
+        price: updateProductDto.price,
+        description: updateProductDto.description,
+        $set: setPicturesWillUpdate,
+      },
       { new: true },
     );
-    if (!updateStudent) {
+    if (!updateProduct) {
       throw new NotFoundException(`Product #${productId} not found`);
     }
-    return response.status(HttpStatus.OK).json({
-      message: 'Product has been successfully updated',
-    });
+    return response.status(HttpStatus.OK).send(updateProduct);
   }
 }

@@ -1,11 +1,38 @@
-.slick-dots li button {
-    width: 6px;
-    height: 6px;
-    border-radius: 100%;
+  .slick-slider{
+  height: 100%;
   }
-  .slick-dots li.slick-active button {
-    width: 7px;
-    height: 7px;
-    border-radius: 100%;
-    background: red;
+  .slick-list{
+  height: 100%;
+  }
+  .slick-track{
+  height: 100%;
+  }
+  .slick-slide div{
+  height: 100%;
+  }
+  .slick-dots{
+	align-items: center;
+  }
+  .slick-dots-bottom{
+  bottom: 0px !important;
+  }
+  .slick-dots li[class=""]{
+  width: 10px;
+  height: 10px;
+  }
+   .slick-dots li[class=""] button{
+  width: 10px;
+  height: 10px;
+  background-color:#000000 !important;
+  border-radius: 100%
+  }
+   .slick-dots li.slick-active{
+  width: 10px !important;
+  height: 10px;
+  }
+   .slick-dots li.slick-active button{
+  width: 10px;
+  height: 10px;
+  background-color:#1890ff !important;
+  border-radius: 100%
   }

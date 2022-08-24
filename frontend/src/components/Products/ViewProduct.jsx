@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-underscore-dangle */
@@ -21,9 +22,10 @@ function ViewProduct(props) {
     setNameProduct(name);
     setIsModalVisible(true);
   };
+
   return (
     <div className="flex flex-col w-full h-full bg-white mt-1">
-      <div className="flex flex-wrap items-center justify-around w-full h-divproduct">
+      <div className="grid grid-cols-2 grid-row-3 gap-4 w-full h-divproduct lg:grid-cols-3 lg:grid-rows-2">
         {dataProducts.data?.map((element, index) => (
           <div
             className="flex flex-col basis-44 m-2 h-40 shadow-lg rounded-md bg-white"
@@ -36,11 +38,13 @@ function ViewProduct(props) {
             {ruleAdmin ? (
               <div className="flex -mt-2 ml-1 w-full justify-around">
                 <button type="button" className="bg-green-500 w-2/6 h-6 mb-1 rounded-sm">
-                  Cập nhật
+                  <Link to={`/edit/${element._id}`} className="text-black hover:text-white">
+                    Cập nhật
+                  </Link>
                 </button>
                 <button
                   type="button"
-                  className="bg-red-500 w-2/6 h-6 mb-1 rounded-sm"
+                  className="bg-red-500 w-2/6 h-6 mb-1 rounded-sm hover:text-white"
                   onClick={(event) => handleClickDelete(event, element._id, element.name)}
                 >
                   Xóa
@@ -53,7 +57,10 @@ function ViewProduct(props) {
         ))}
       </div>
       <div className=" w-full h-divsearch flex justify-center items-center">
-        <PaginationPage totalPage={dataProducts.totalPage} currentPage={dataProducts.currentPage} />
+        <PaginationPage
+          totalPage={dataProducts?.totalPage}
+          currentPage={dataProducts?.currentPage}
+        />
       </div>
       <ModalCautionDelete
         setDataProducts={setDataProducts}
@@ -64,7 +71,7 @@ function ViewProduct(props) {
         nameProduct={nameProduct}
       />
       <ModalSuccess
-        rule="del"
+        rule="delete"
         isModalSuccessVisible={isModalSuccessVisible}
         setIsModalSuccessVisible={setIsModalSuccessVisible}
       />

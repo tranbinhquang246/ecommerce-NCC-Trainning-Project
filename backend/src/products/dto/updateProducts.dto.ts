@@ -1,12 +1,13 @@
+import { Transform } from 'class-transformer';
 import {
   IsNotEmpty,
   IsNumber,
   IsString,
   Min,
   Max,
-  IsArray,
   IsInt,
   MaxLength,
+  IsArray,
 } from 'class-validator';
 
 export class UpdateProductsDto {
@@ -25,6 +26,7 @@ export class UpdateProductsDto {
   @IsNotEmpty()
   @IsNumber()
   @IsInt()
+  @Transform(({ value }) => Number.parseInt(value))
   @Min(10000, { message: 'Number min 10000 ' })
   @Max(1000000000, { message: 'Number max 1000000000' })
   price: number;
@@ -33,10 +35,5 @@ export class UpdateProductsDto {
   @MaxLength(500, { message: 'Must be at least 500 characters' })
   description: string;
 
-  @IsString()
-  @IsNotEmpty()
-  mainImg: string;
-
-  @IsArray()
-  slidesImg: Array<string>;
+  poisitions: [];
 }

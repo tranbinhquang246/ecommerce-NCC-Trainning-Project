@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable react/prop-types */
 import React from 'react';
@@ -15,10 +16,8 @@ function ModalCautionDelete(props) {
     idProduct,
     nameProduct,
   } = props;
-  const [searchParams] = useSearchParams();
-
+  const [searchParams, setSearchParams] = useSearchParams();
   const handleOk = async () => {
-    // Xử lý sao cho khi xóa thì cũng xóa ảnh trong server luôn
     await axios({
       method: 'delete',
       url: `http://localhost:5000/products/${idProduct}`,
@@ -27,11 +26,14 @@ function ModalCautionDelete(props) {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}products?category=${
             searchParams.get('category') || ''
-          }&brand=${searchParams.get('brand') || ''}&page=${searchParams.get('page') || '1'}`,
+          }&brand=${searchParams.get('brand') || ''}&page=${
+            searchParams.get('page') || '1'
+          }&searchWord=${searchParams.get('search') || ''}`,
         );
+
         setDataProducts(response);
-        setIsModalSuccessVisible(true);
         setIsModalVisible(false);
+        setIsModalSuccessVisible(true);
       })
       .catch((response) => {
         console.log(response);

@@ -14,7 +14,6 @@ import {
 
 export class SearchProductDto {
   @ApiPropertyOptional()
-  @MinLength(1)
   @MaxLength(64)
   @IsOptional()
   searchWord: string;
