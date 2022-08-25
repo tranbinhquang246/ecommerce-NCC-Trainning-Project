@@ -11,7 +11,7 @@ function Carosel(props) {
   if (slidesImg[0]?.filter((element) => element !== null).length !== 0) {
     return (
       <div className="grid grid-cols-1 grid-rows-1 w-full h-full">
-        <Carousel>
+        <Carousel autoplay>
           {results?.map((element, index) => (
             <img src={element} className="w-full h-full object-full" alt="" key={index} />
           ))}

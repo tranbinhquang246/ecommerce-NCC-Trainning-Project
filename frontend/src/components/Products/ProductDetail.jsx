@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -54,15 +55,15 @@ function ProductDetail() {
     fetchData();
   }, [dataProduct]);
   return (
-    <div className="flex justify-center items-center w-full h-full">
-      <div className="flex flex-col w-10/12 h-divproduct rounded-lg justify-around">
-        <div className="flex items-center cursor-pointer">
+    <div className="flex justify-center items-center w-full h-full bg-slate-200">
+      <div className="flex flex-col w-9/12 h-divproduct rounded-lg justify-around bg-white p-5">
+        <div className="flex items-center cursor-pointer w-full h-[5%]">
           <AiOutlineArrowLeft />
           <label className="text-center ml-1 cursor-pointer" onClick={handleClickReturn}>
             Quay lại
           </label>
         </div>
-        <div className="flex h-2/5 flex-wrap justify-center items-center">
+        <div className="flex h-[50%] flex-wrap justify-center items-center">
           <div className="flex flex-col h-full w-3/6 pl-2">
             <strong className="text-sm">{dataProduct?.name}</strong>
             <div className="flex mt-2">
@@ -91,11 +92,13 @@ function ProductDetail() {
             <Carosel mainImg={dataProduct?.mainImg} slidesImg={[dataProduct?.slidesImg]} />
           </div>
         </div>
-        <div className="font-bold">Gợi ý cho bạn</div>
-        <div className="flex h-2/5">
-          {dataRecommendProduct?.map((element, index) => (
-            <CardItem element={element} index={index} key={index} />
-          ))}
+        <div className="flex flex-col w-full h-[45%]">
+          <h5>Gợi ý cho bạn</h5>
+          <div className="grid grid-cols-3 grid-rows-1 w-full h-[95%] gap-6">
+            {dataRecommendProduct?.map((element, index) => (
+              <CardItem ruleAdmin={false} element={element} index={index} key={index} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

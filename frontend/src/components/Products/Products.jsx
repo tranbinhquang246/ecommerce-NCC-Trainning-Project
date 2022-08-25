@@ -62,7 +62,7 @@ function Products() {
   return (
     <div className="flex justify-center items-center w-full h-full bg-slate-200">
       <div className="flex flex-col w-10/12 h-divproduct">
-        <div className="flex justify-end items-center w-full h-divsearch">
+        <div className="flex justify-end items-center w-full h-[10%]">
           <form className="flex items-center" onChange={handleChangeSearch}>
             <label htmlFor="simple-search" className="sr-only">
               Search
@@ -83,15 +83,17 @@ function Products() {
             </div>
           </form>
         </div>
-        {dataProducts.data?.length === 0 ? (
-          <Empty />
-        ) : (
-          <ViewProduct
-            dataProducts={dataProducts}
-            setDataProducts={setDataProducts}
-            ruleAdmin={ruleAdmin}
-          />
-        )}
+        <div className="flex justify-center items-center w-full h-[90%]">
+          {dataProducts.data?.length === 0 ? (
+            <Empty />
+          ) : (
+            <ViewProduct
+              dataProducts={dataProducts}
+              setDataProducts={setDataProducts}
+              ruleAdmin={ruleAdmin}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

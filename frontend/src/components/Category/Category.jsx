@@ -4,19 +4,20 @@
 /* eslint-disable array-callback-return */
 import { Menu } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from '../../api/axios';
 import useLoading from '../../hooks/useLoading';
 
 function Category() {
+  const [showLoading, hideLoading] = useLoading();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [category, setCategory] = useState([]);
   const [valueCategory, setValueCategory] = useState([]);
   const [brands, setBrands] = useState([]);
   const [brand, setBrand] = useState([]);
-  const [showLoading, hideLoading] = useLoading();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [defaultSelectCategory] = useState(searchParams.get('category') || '');
-  const [defaultSelectBrand] = useState(searchParams.get('brand') || 'tất cả');
+  const [defaultSelectCategory, setDefaultSelectCategory] = useState();
+  const [defaultSelectBrand, setDefaultSelectBrand] = useState();
 
   useEffect(() => {
     let arrCategory = ['Tất cả'];
@@ -47,9 +48,32 @@ function Category() {
     fetchData();
   }, []);
   useEffect(() => {
-    setBrand(brands[0]);
+    if (searchParams.get('category') === null || searchParams.get('category') === '') {
+      setBrand(brands[0]);
+    } else if (searchParams.get('category') === 'xemay') {
+      setBrand(brands[1]);
+    } else if (searchParams.get('category') === 'xedap') {
+      setBrand(brands[2]);
+    } else {
+      setBrand(brands[3]);
+    }
   }, [brands]);
+  useEffect(() => {
+    if (searchParams.get('category') === null && searchParams.get('brand') === null) {
+      setDefaultSelectCategory('');
+      setDefaultSelectBrand('tất cả');
+    } else if (searchParams.get('brand') === '') {
+      setDefaultSelectCategory(searchParams.get('category'));
+      setDefaultSelectBrand('tất cả');
+    } else {
+      setDefaultSelectCategory(searchParams.get('category'));
+      setDefaultSelectBrand(searchParams.get('brand'));
+    }
+  }, [navigate, searchParams]);
 
+  useEffect(() => {
+    console.log('i want to sleep');
+  }, [defaultSelectCategory]);
   function getItem(label, key, icon, children, type) {
     return {
       key,
@@ -83,6 +107,7 @@ function Category() {
     searchParams.set('brand', '');
     searchParams.set('page', pageParam);
     setSearchParams(searchParams);
+    setDefaultSelectBrand('tất cả');
   };
   const onClickBrand = (e) => {
     const categoryParam = searchParams.get('category') || '';
@@ -107,7 +132,7 @@ function Category() {
           width: '100%',
           fontWeight: 'bold',
         }}
-        defaultSelectedKeys={[defaultSelectCategory]}
+        selectedKeys={[defaultSelectCategory]}
         defaultOpenKeys={['category']}
         mode="inline"
         items={itemsCategory}
@@ -118,7 +143,7 @@ function Category() {
           width: '100%',
           fontWeight: 'bold',
         }}
-        defaultSelectedKeys={[defaultSelectBrand]}
+        selectedKeys={[defaultSelectBrand]}
         defaultOpenKeys={['brand']}
         mode="inline"
         items={itemsBrand}

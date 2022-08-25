@@ -101,15 +101,17 @@ function ProductsManagement() {
               </form>
             </div>
           </div>
-          {dataProducts.data?.length === 0 ? (
-            <Empty />
-          ) : (
-            <ViewProduct
-              dataProducts={dataProducts}
-              setDataProducts={setDataProducts}
-              ruleAdmin={ruleAdmin}
-            />
-          )}
+          <div className="flex justify-center items-center w-full h-[90%]">
+            {dataProducts.data?.length === 0 ? (
+              <Empty />
+            ) : (
+              <ViewProduct
+                dataProducts={dataProducts}
+                setDataProducts={setDataProducts}
+                ruleAdmin={ruleAdmin}
+              />
+            )}
+          </div>
         </div>
       </div>
       <ModalAdd
