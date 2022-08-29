@@ -1,6 +1,4 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
-// eslint-disable-next-line no-unused-vars
 import { Modal } from 'antd';
 import ErrorIcon from '../../assets/error.png';
 

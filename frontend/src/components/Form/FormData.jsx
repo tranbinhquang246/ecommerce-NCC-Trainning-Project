@@ -1,46 +1,55 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable react/prop-types */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react';
 import {
   Form, Input, Select, InputNumber,
 } from 'antd';
 import axios from '../../api/axios';
-import validate from '../../validateForm/validatePrice';
+import validatePrice from '../../validateForm/validatePrice';
+import validateName from '../../validateForm/validateName';
+import validateDescription from '../../validateForm/validateDescription';
+import './index.css';
 
 function FormData({ form }) {
   const [category, setCategory] = useState([]);
-  const [values, setValues] = useState([]);
+  const [valueCategory, setValueCategory] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [valueBrands, setValueBrands] = useState([]);
   const [brand, setBrand] = useState([]);
+  const [valueBrand, setValueBrand] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
-      let arrCategory = [];
-      let arrValue = [];
+      let arrCategorys = [];
+      let arrCategoryValues = [];
       let arrBrands = [];
+      let arrBrandsValues = [];
       try {
-        const response = await axios.get('http://localhost:5000/dropdown');
-        response.data[0].data?.map((element) => {
-          arrCategory = [...arrCategory, element.categoryName];
-          arrValue = [...arrValue, element.value];
-          arrBrands = [...arrBrands, element.brand];
-          setCategory(arrCategory);
-          setValues(arrValue);
-          setBrands(arrBrands);
-        });
+        await axios
+          .get('http://localhost:5000/category')
+          .then((response) => {
+            response[0].data?.forEach((element) => {
+              arrCategorys = [...arrCategorys, element.categoryNames];
+              arrCategoryValues = [...arrCategoryValues, element.categoryValues];
+              arrBrands = [...arrBrands, element.brandNames];
+              arrBrandsValues = [...arrBrandsValues, element.brandValues];
+            });
+          })
+          .then(() => {
+            setCategory(arrCategorys);
+            setValueCategory(arrCategoryValues);
+            setBrands(arrBrands);
+            setValueBrands(arrBrandsValues);
+          });
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error(error.message);
       }
     };
     fetchData();
   }, []);
-
   const handleSelectCategory = (_, value) => {
     form.setFieldsValue({ brand: null });
     setBrand(brands[value.key]);
+    setValueBrand(valueBrands[value.key]);
   };
   const { TextArea } = Input;
   const { Option } = Select;
@@ -53,7 +62,7 @@ function FormData({ form }) {
           { required: true, message: 'Hãy điền tên sản phẩm' },
           {
             message: 'Không chứa các kí tự đặc biệt',
-            validator: validate.validateName,
+            validator: validateName.validateName,
           },
         ]}
         validateTrigger="onBlur"
@@ -71,7 +80,7 @@ function FormData({ form }) {
           onSelect={(event, value) => handleSelectCategory(event, value)}
         >
           {category?.map((element, index) => (
-            <Option value={values[index]} key={index}>
+            <Option value={valueCategory[index]} key={index}>
               {element}
             </Option>
           ))}
@@ -85,7 +94,7 @@ function FormData({ form }) {
       >
         <Select placeholder="Chọn hãng sản xuất">
           {brand?.map((element, index) => (
-            <Option value={element.toLowerCase()} key={index}>
+            <Option value={valueBrand[index]} key={index}>
               {element}
             </Option>
           ))}
@@ -102,11 +111,11 @@ function FormData({ form }) {
           },
           {
             message: 'Tối thiểu 10000',
-            validator: validate.validatePriceMinimum,
+            validator: validatePrice.validatePriceMinimum,
           },
           {
             message: 'Tối đa 1000000000',
-            validator: validate.validatePriceMaximum,
+            validator: validatePrice.validatePriceMaximum,
           },
         ]}
         validateTrigger="onBlur"
@@ -120,7 +129,7 @@ function FormData({ form }) {
         rules={[
           {
             message: 'Không quá 500 kí tự',
-            validator: validate.validateDesciption,
+            validator: validateDescription.validateDesciption,
           },
         ]}
       >

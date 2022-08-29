@@ -26,5 +26,9 @@ module.exports = {
     'react/react-in-jsx-scope': 0,
     'linebreak-style': 0,
     'dot-notation': 'off',
+    'no-underscore-dangle': 'off',
+    'react/prop-types': 'off',
+    'react/jsx-no-constructed-context-values': 'off',
+    'no-unsafe-optional-chaining': 'off',
   },
 };

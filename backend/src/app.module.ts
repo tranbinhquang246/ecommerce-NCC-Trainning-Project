@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CoreModule } from './core/core.module';
-import { DropdownModule } from './dropdown/dropdown.module';
+import { CategoryModule } from './category/category.module';
 import { ProductsModule } from './products/products.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -18,7 +18,7 @@ import { join } from 'path';
     ConfigModule.forRoot(),
     MongooseModule.forRoot('mongodb://localhost/project_trainning'),
     CoreModule,
-    DropdownModule,
+    CategoryModule,
     ProductsModule,
   ],
 })

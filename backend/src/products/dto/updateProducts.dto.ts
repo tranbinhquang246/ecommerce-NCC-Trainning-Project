@@ -7,7 +7,6 @@ import {
   Max,
   IsInt,
   MaxLength,
-  IsArray,
 } from 'class-validator';
 
 export class UpdateProductsDto {

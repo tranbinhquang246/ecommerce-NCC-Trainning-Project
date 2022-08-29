@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type DropdownDocument = Dropdown & Document;
+export type CategoryDocument = Category & Document;
 
 @Schema()
-export class Dropdown {
+export class Category {
   @Prop({ type: Array })
   data: [];
 }
 
-export const DropdownSchema = SchemaFactory.createForClass(Dropdown);
+export const CategorySchema = SchemaFactory.createForClass(Category);

@@ -1,0 +1,6 @@
+.ant-menu-item-selected {
+    background-color: #ffffff !important;
+  }
+.ant-menu-inline .ant-menu-item:after{
+border-right: none !important;
+}

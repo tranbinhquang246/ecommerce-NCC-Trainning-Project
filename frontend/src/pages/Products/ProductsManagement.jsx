@@ -1,16 +1,12 @@
-/* eslint-disable max-len */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-console */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
 import axios from '../../api/axios';
 import ViewProduct from './ViewProduct';
-import ModalAdd from '../Modal/ModalAdd';
-import ModalSuccess from '../Modal/ModalSuccess';
+import ModalAdd from '../../components/Modal/ModalAdd';
+import ModalSuccess from '../../components/Modal/ModalSuccess';
 import Empty from '../Empty/Empty';
-import ModalError from '../Modal/ModalError';
+import ModalError from '../../components/Modal/ModalError';
 import useLoading from '../../hooks/useLoading';
 
 function ProductsManagement() {
@@ -23,6 +19,7 @@ function ProductsManagement() {
   const typingTimoutRef = useRef(null);
   const ruleAdmin = true;
   const [showLoading, hideLoading] = useLoading();
+  const [action, setAction] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +34,6 @@ function ProductsManagement() {
         );
         setDataProducts(response);
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error(error.message);
       } finally {
         hideLoading();
@@ -51,6 +47,7 @@ function ProductsManagement() {
       dataProducts.data?.length === 0
       && dataProducts?.totalPage < dataProducts?.currentPage
       && dataProducts?.totalPage !== 0
+      && action === 'delete'
     ) {
       searchParams.set('page', dataProducts?.totalPage);
       setSearchParams(searchParams);
@@ -64,26 +61,24 @@ function ProductsManagement() {
     }
     typingTimoutRef.current = setTimeout(() => {
       searchParams.set('search', valueSearch);
+      searchParams.set('page', '1');
       setSearchParams(searchParams);
     }, 500);
   };
   return (
-    <div className="w-full">
-      <div className="flex justify-center items-center w-full h-full">
-        <div className="flex flex-col w-10/12 h-divproduct">
-          <div className="flex justify-between items-center w-full h-divsearch">
-            <button
-              type="button"
-              className=" hover:bg-[#00CCFF] hover:text-white text-[#00CCFF] py-[0.3rem] px-4 rounded-md border border-[#00CCFF]"
-              onClick={() => setIsModalAddVisible(true)}
-            >
-              Thêm sản phẩm
-            </button>
-            <div className="flex justify-center items-center">
-              <form className="flex items-center" onChange={handleChangeSearch}>
-                <label htmlFor="simple-search" className="sr-only">
-                  Search
-                </label>
+    <div className="flex justify-center items-center w-[81.3%] h-full bg-slate-200">
+      <div className="flex flex-col w-[83.7%] h-divproduct">
+        <div className="flex justify-between items-center w-full h-[10%]">
+          <button
+            type="button"
+            className=" hover:bg-[#00CCFF] hover:text-white text-[#00CCFF] py-[0.3rem] px-4 rounded-md border border-[#00CCFF]"
+            onClick={() => setIsModalAddVisible(true)}
+          >
+            Thêm sản phẩm
+          </button>
+          <div className="flex justify-center items-center">
+            <form className="flex items-center" onChange={handleChangeSearch}>
+              <label htmlFor="simple-search">
                 <div className="relative w-full">
                   <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                     <BsSearch />
@@ -98,20 +93,22 @@ function ProductsManagement() {
                     defaultValue={searchParams.get('search') || ''}
                   />
                 </div>
-              </form>
-            </div>
+              </label>
+            </form>
           </div>
-          <div className="flex justify-center items-center w-full h-[90%]">
-            {dataProducts.data?.length === 0 ? (
-              <Empty />
-            ) : (
-              <ViewProduct
-                dataProducts={dataProducts}
-                setDataProducts={setDataProducts}
-                ruleAdmin={ruleAdmin}
-              />
-            )}
-          </div>
+        </div>
+        <div className="flex justify-center items-center w-full h-[90%]">
+          {dataProducts.data?.length === 0 ? (
+            <Empty />
+          ) : (
+            <ViewProduct
+              dataProducts={dataProducts}
+              setDataProducts={setDataProducts}
+              ruleAdmin={ruleAdmin}
+              setAction={setAction}
+              setIsModalSuccessVisible={setIsModalSuccessVisible}
+            />
+          )}
         </div>
       </div>
       <ModalAdd
@@ -121,9 +118,10 @@ function ProductsManagement() {
         setIsModalSuccessVisible={setIsModalSuccessVisible}
         setIsModalErrorVisible={setIsModalErrorVisible}
         setIdProduct={setIdProduct}
+        setAction={setAction}
       />
       <ModalSuccess
-        rule="add"
+        rule={action}
         idProduct={idProduct}
         isModalSuccessVisible={isModalSuccessVisible}
         setIsModalSuccessVisible={setIsModalSuccessVisible}

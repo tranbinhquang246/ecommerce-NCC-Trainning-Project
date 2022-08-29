@@ -15,11 +15,13 @@ import {
 } from './dto';
 import { Product, ProductDocument } from './schema/product.schema';
 import fs = require('fs');
+import { Category, CategoryDocument } from '../category/schema/category.schema';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
+    @InjectModel(Category.name) private categoryModel: Model<CategoryDocument>,
   ) {}
 
   async getAllProducts(searchProductDto: SearchProductDto, @Res() response) {
@@ -65,7 +67,6 @@ export class ProductsService {
         category ? { category: category } : {},
       ],
     };
-    const productsCount = await this.productModel.find(filter).count().exec();
     const findProduct = await this.productModel
       .find(filter)
       .limit(limit)
@@ -81,12 +82,30 @@ export class ProductsService {
     return response.status(HttpStatus.OK).send(data);
   }
 
+  async getCategory() {
+    const category = await this.categoryModel.find().exec();
+    return category;
+  }
   async getOneProduct(productId: string, @Res() response) {
     const findProduct = await this.productModel.findById(productId);
     if (!findProduct) {
       throw new NotFoundException(`Product #${productId} does not exist`);
     }
-    return response.status(HttpStatus.OK).send(findProduct);
+    this.getCategory().then(function (result) {
+      result[0]?.data.map((element) => {
+        if (findProduct.category === element['categoryValues']) {
+          findProduct.valueCategory = findProduct.category;
+          findProduct.category = element['categoryNames'];
+        }
+        (element['brandValues'] as Category[]).map((value, index) => {
+          if (findProduct.brand === String(value)) {
+            findProduct.valueBrand = findProduct.brand;
+            findProduct.brand = element['brandNames'][index];
+          }
+        });
+      });
+      return response.status(HttpStatus.OK).send(findProduct);
+    });
   }
 
   async createProduct(

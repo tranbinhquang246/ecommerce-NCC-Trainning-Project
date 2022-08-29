@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import emptyIcons from '../../assets/empty.png';
-import ModalSuccess from '../Modal/ModalSuccess';
+import ModalSuccess from '../../components/Modal/ModalSuccess';
 
 function Empty() {
   const [isModalSuccessVisible, setIsModalSuccessVisible] = useState(false);

@@ -1,10 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable no-console */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useRef, useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { useSearchParams } from 'react-router-dom';
@@ -17,6 +10,7 @@ function Products() {
   const [dataProducts, setDataProducts] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [showLoading, hideLoading] = useLoading();
+  const [message, setMessage] = useState(searchParams.get('search'));
   const ruleAdmin = false;
   const typingTimoutRef = useRef(null);
 
@@ -33,7 +27,6 @@ function Products() {
         );
         setDataProducts(response);
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error(error.message);
       } finally {
         hideLoading();
@@ -42,45 +35,38 @@ function Products() {
     fetchData();
   }, [searchParams]);
 
-  //   useEffect(() => {
-  //     if (dataProducts.data?.length === 0 && dataProducts?.totalPage < dataProducts?.currentPage) {
-  //       searchParams.set('page', dataProducts?.totalPage);
-  //       setSearchParams(searchParams);
-  //     }
-  //   }, [dataProducts]);
-
   const handleChangeSearch = (e) => {
-    const valueSearch = e.target.value;
+    const valueSearch = e.target.value.replace(/[^a-z ]/gi, '');
+    setMessage(valueSearch);
     if (typingTimoutRef.current) {
       clearTimeout(typingTimoutRef.current);
     }
     typingTimoutRef.current = setTimeout(() => {
       searchParams.set('search', valueSearch);
+      searchParams.set('page', '1');
       setSearchParams(searchParams);
     }, 1000);
   };
   return (
-    <div className="flex justify-center items-center w-full h-full bg-slate-200">
-      <div className="flex flex-col w-10/12 h-divproduct">
+    <div className="flex justify-center items-center w-[81.3%] h-full bg-slate-200">
+      <div className="flex flex-col w-[83.7%] h-divproduct">
         <div className="flex justify-end items-center w-full h-[10%]">
           <form className="flex items-center" onChange={handleChangeSearch}>
-            <label htmlFor="simple-search" className="sr-only">
-              Search
-            </label>
-            <div className="relative w-full">
-              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                <BsSearch />
+            <label htmlFor="simple-search">
+              <div className="relative w-full">
+                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                  <BsSearch />
+                </div>
+                <input
+                  type="text"
+                  id="simple-search"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-1  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Search"
+                  name="search"
+                  value={message}
+                />
               </div>
-              <input
-                type="text"
-                id="simple-search"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-1  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search"
-                required
-                name="search"
-                defaultValue={searchParams.get('search') || ''}
-              />
-            </div>
+            </label>
           </form>
         </div>
         <div className="flex justify-center items-center w-full h-[90%]">

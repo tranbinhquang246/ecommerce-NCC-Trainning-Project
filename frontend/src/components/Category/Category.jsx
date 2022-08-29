@@ -1,12 +1,11 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable prefer-spread */
-/* eslint-disable no-shadow */
 /* eslint-disable array-callback-return */
+/* eslint-disable no-unused-vars */
 import { Menu } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from '../../api/axios';
 import useLoading from '../../hooks/useLoading';
+import './index.css';
 
 function Category() {
   const [showLoading, hideLoading] = useLoading();
@@ -15,30 +14,46 @@ function Category() {
   const [category, setCategory] = useState([]);
   const [valueCategory, setValueCategory] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [valuebrands, setValueBrands] = useState([]);
   const [brand, setBrand] = useState([]);
+  const [valueBrand, setValueBrand] = useState([]);
+
   const [defaultSelectCategory, setDefaultSelectCategory] = useState();
   const [defaultSelectBrand, setDefaultSelectBrand] = useState();
 
   useEffect(() => {
-    let arrCategory = ['Tất cả'];
-    let arrValueCategory = [''];
+    let arrCategorys = ['Tất cả'];
+    let arrCategoryValues = [''];
     let arrBrands = [];
+    let arrBrandValues = [];
     let allBrands = [];
+    let allBrandsValues = [];
+
     const fetchData = async () => {
       showLoading();
       try {
-        const response = await axios.get('http://localhost:5000/dropdown');
-        response.data[0].data?.map((element) => {
-          arrCategory = [...arrCategory, element.categoryName];
-          arrValueCategory = [...arrValueCategory, element.value];
-          arrBrands = [...arrBrands, element.brand];
-        });
-        setCategory(arrCategory);
-        setValueCategory(arrValueCategory);
-        setBrands(arrBrands);
-        allBrands = [].concat.apply([], arrBrands);
-        arrBrands = [allBrands, ...arrBrands];
-        setBrands(arrBrands?.map((element) => ['Tất cả', ...element]));
+        axios
+          .get('http://localhost:5000/category')
+          .then((response) => {
+            response[0].data?.forEach((element) => {
+              arrCategorys = [...arrCategorys, element.categoryNames];
+              arrCategoryValues = [...arrCategoryValues, element.categoryValues];
+              arrBrands = [...arrBrands, element.brandNames];
+              arrBrandValues = [...arrBrandValues, element.brandValues];
+            });
+          })
+          .then(() => {
+            setCategory(arrCategorys);
+            setValueCategory(arrCategoryValues);
+            setBrands(arrBrands);
+            setValueBrands(arrBrandValues);
+            allBrands = [].concat([], ...arrBrands);
+            allBrandsValues = [].concat([], ...arrBrandValues);
+            arrBrands = [allBrands, ...arrBrands];
+            arrBrandValues = [allBrandsValues, ...arrBrandValues];
+            setBrands(arrBrands?.map((element) => ['Tất cả', ...element]));
+            setValueBrands(arrBrandValues?.map((element) => ['', ...element]));
+          });
       } catch (error) {
         console.error(error.message);
       } finally {
@@ -48,32 +63,26 @@ function Category() {
     fetchData();
   }, []);
   useEffect(() => {
-    if (searchParams.get('category') === null || searchParams.get('category') === '') {
+    if (searchParams.get('category') === null) {
       setBrand(brands[0]);
-    } else if (searchParams.get('category') === 'xemay') {
-      setBrand(brands[1]);
-    } else if (searchParams.get('category') === 'xedap') {
-      setBrand(brands[2]);
+      setValueBrand(valuebrands[0]);
     } else {
-      setBrand(brands[3]);
+      valueCategory.map((element, index) => {
+        if (searchParams.get('category') === element) {
+          setBrand(brands[index]);
+          setValueBrand(valuebrands[index]);
+        }
+      });
     }
   }, [brands]);
-  useEffect(() => {
-    if (searchParams.get('category') === null && searchParams.get('brand') === null) {
-      setDefaultSelectCategory('');
-      setDefaultSelectBrand('tất cả');
-    } else if (searchParams.get('brand') === '') {
-      setDefaultSelectCategory(searchParams.get('category'));
-      setDefaultSelectBrand('tất cả');
-    } else {
-      setDefaultSelectCategory(searchParams.get('category'));
-      setDefaultSelectBrand(searchParams.get('brand'));
-    }
-  }, [navigate, searchParams]);
 
   useEffect(() => {
-    console.log('i want to sleep');
-  }, [defaultSelectCategory]);
+    const selectCategory = searchParams.get('category');
+    const selectBrand = searchParams.get('brand');
+    setDefaultSelectCategory(selectCategory || '');
+    setDefaultSelectBrand(selectBrand || '');
+  }, [navigate, searchParams]);
+
   function getItem(label, key, icon, children, type) {
     return {
       key,
@@ -97,35 +106,23 @@ function Category() {
       'Hãng',
       'brand',
       null,
-      brand?.map((element) => getItem(element, element.toLowerCase())),
+      brand?.map((element, index) => getItem(element, valueBrand[index])),
     ),
   ];
   const onClickCategory = (e) => {
-    const pageParam = searchParams.get('page') || '1';
     setBrand(brands[valueCategory.indexOf(e.key)]);
+    setValueBrand(valuebrands[valueCategory.indexOf(e.key)]);
     searchParams.set('category', e.key);
     searchParams.set('brand', '');
-    searchParams.set('page', pageParam);
     setSearchParams(searchParams);
-    setDefaultSelectBrand('tất cả');
+    setDefaultSelectBrand('');
   };
   const onClickBrand = (e) => {
-    const categoryParam = searchParams.get('category') || '';
-    const pageParam = searchParams.get('page') || '1';
-    if (e.key === 'tất cả') {
-      searchParams.set('category', categoryParam);
-      searchParams.set('brand', '');
-      searchParams.set('page', pageParam);
-      setSearchParams(searchParams);
-    } else {
-      searchParams.set('category', categoryParam);
-      searchParams.set('brand', e.key);
-      searchParams.set('page', pageParam);
-      setSearchParams(searchParams);
-    }
+    searchParams.set('brand', e.key);
+    setSearchParams(searchParams);
   };
   return (
-    <div className="h-full w-divlogo overflow-x-hidden overflow-y-scroll">
+    <div className="h-full w-[18.7%] overflow-x-hidden overflow-y-scroll">
       <Menu
         onClick={onClickCategory}
         style={{

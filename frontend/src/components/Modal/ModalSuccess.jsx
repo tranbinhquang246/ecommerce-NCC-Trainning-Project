@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -15,10 +14,7 @@ function ModalSuccess(props) {
     navigate(`/product/${idProduct}`);
     setIsModalSuccessVisible(false);
   };
-  const handleUpdateOk = () => {
-    navigate(`/product/${idProduct}`);
-    setIsModalSuccessVisible(false);
-  };
+  const handleUpdateOk = () => {};
   const handleDeleteOk = async () => {
     setIsModalSuccessVisible(false);
   };

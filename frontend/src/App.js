@@ -3,24 +3,24 @@ import {
   BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import Error from './components/Error/Error';
-import Error404 from './components/Error/Error404';
-import Error400 from './components/Error/Error400';
-import Error500 from './components/Error/Error500';
-import Home from './pages/Mainpage/Home';
-import Products from './components/Products/Products';
-import ProductManagement from './components/Products/ProductsManagement';
+import Error from './pages/Error/Error';
+import Error404 from './pages/Error/Error404';
+import Error400 from './pages/Error/Error400';
+import Error500 from './pages/Error/Error500';
+import MainLayout from './layout/MainLayout';
+import Products from './pages/Products/Products';
+import ProductManagement from './pages/Products/ProductsManagement';
 import OverlayProvider from './context/OverlayContext';
 import 'antd/dist/antd.min.css';
-import ProductDetail from './components/Products/ProductDetail';
-import EditProduct from './components/Products/EditProduct';
+import ProductDetail from './pages/Products/ProductDetail';
+import EditProduct from './pages/Products/EditProduct';
 
 function App() {
   return (
     <OverlayProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />}>
+          <Route path="/" element={<MainLayout />}>
             <Route index element={<Products />} />
             <Route path="/management" element={<ProductManagement />} />
             <Route path="/product/:productID" element={<ProductDetail />} />

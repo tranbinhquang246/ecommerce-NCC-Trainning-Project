@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { Modal } from 'antd';
 import { useSearchParams } from 'react-router-dom';
@@ -15,8 +12,9 @@ function ModalCautionDelete(props) {
     setIsModalSuccessVisible,
     idProduct,
     nameProduct,
+    setAction,
   } = props;
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const handleOk = async () => {
     await axios({
       method: 'delete',
@@ -32,6 +30,7 @@ function ModalCautionDelete(props) {
         );
 
         setDataProducts(response);
+        setAction('delete');
         setIsModalVisible(false);
         setIsModalSuccessVisible(true);
       })

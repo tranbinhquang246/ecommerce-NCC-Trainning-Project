@@ -1,5 +1,4 @@
 import axios from 'axios';
-// import { toast } from 'react-toastify';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -30,7 +29,6 @@ axiosInstance.interceptors.response.use(
     const statusCode = error?.response?.status;
     // const message = error?.response?.data?.message;
     if (statusCode === 400) {
-      alert('hsdhhd');
       window.location.href = '/bad-request';
       return;
     }

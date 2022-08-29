@@ -15,6 +15,12 @@ export class Product {
   brand: string;
 
   @Prop()
+  valueCategory: string;
+
+  @Prop()
+  valueBrand: string;
+
+  @Prop()
   price: number;
 
   @Prop()

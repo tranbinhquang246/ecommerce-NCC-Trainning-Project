@@ -1,4 +1,4 @@
-const validate = {
+const validatePrice = {
   validatePriceMinimum: (_, value) => {
     if (value < 10000) {
       return Promise.reject();
@@ -7,12 +7,6 @@ const validate = {
   },
   validatePriceMaximum: (_, value) => {
     if (value > 1000000000) {
-      return Promise.reject();
-    }
-    return Promise.resolve();
-  },
-  validatePriceNegative: (_, value) => {
-    if (value < 0) {
       return Promise.reject();
     }
     return Promise.resolve();
@@ -32,4 +26,4 @@ const validate = {
   },
 };
 
-export default validate;
+export default validatePrice;

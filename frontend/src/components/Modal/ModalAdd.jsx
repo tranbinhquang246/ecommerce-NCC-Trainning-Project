@@ -1,15 +1,10 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/jsx-no-constructed-context-values */
-/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { IconContext } from 'react-icons';
 import { useSearchParams } from 'react-router-dom';
 
 import { Form, Modal, Upload } from 'antd';
 import { RiCloseCircleFill } from 'react-icons/ri';
-import { PlusOutlined } from '@ant-design/icons';
+import { GrFormAdd } from 'react-icons/gr';
 import axios from '../../api/axios';
 import FormDataAdd from '../Form/FormData';
 import validateImage from '../../validateForm/validateImage';
@@ -22,6 +17,7 @@ function ModalAdd(props) {
     setIsModalSuccessVisible,
     setIsModalErrorVisible,
     setIdProduct,
+    setAction,
   } = props;
   const [isButtonShow, setIsButtonShow] = useState(true);
   const [searchParams] = useSearchParams();
@@ -30,7 +26,7 @@ function ModalAdd(props) {
 
   const uploadButton = (
     <div className="">
-      <PlusOutlined />
+      <GrFormAdd />
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
@@ -62,6 +58,7 @@ function ModalAdd(props) {
         );
         setIdProduct(response._id);
         setDataProducts(dataProduct);
+        setAction('add');
         setIsModalAddVisible(false);
         setIsModalSuccessVisible(true);
         setIsButtonShow(true);
@@ -106,7 +103,7 @@ function ModalAdd(props) {
               form={form}
             >
               <FormDataAdd form={form} />
-              <div className="h-[145px]">
+              <div className="h-[200px]">
                 <Form.Item
                   style={{ marginTop: '-5px' }}
                   name="mainImg"
