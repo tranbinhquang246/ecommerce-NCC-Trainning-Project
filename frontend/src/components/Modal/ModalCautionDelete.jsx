@@ -19,7 +19,7 @@ function ModalCautionDelete(props) {
   const handleOk = async () => {
     await axios({
       method: 'delete',
-      url: `http://localhost:5000/products/${idProduct}`,
+      url: `${process.env.REACT_APP_API_URL}products/${idProduct}`,
     }).then(async (response) => {
       if (response) {
         const dataProducts = await axios.get(

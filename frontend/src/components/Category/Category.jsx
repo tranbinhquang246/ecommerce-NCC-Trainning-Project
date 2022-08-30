@@ -1,5 +1,4 @@
 /* eslint-disable array-callback-return */
-/* eslint-disable no-unused-vars */
 import { Menu } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
@@ -7,7 +6,7 @@ import axios from '../../api/axios';
 import useLoading from '../../hooks/useLoading';
 import './index.css';
 
-function Category() {
+function Category({ isDisableContext }) {
   const [showLoading, hideLoading] = useLoading();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -17,8 +16,6 @@ function Category() {
   const [valuebrands, setValueBrands] = useState([]);
   const [brand, setBrand] = useState([]);
   const [valueBrand, setValueBrand] = useState([]);
-  const [disableMenu, setDisableMenu] = useState([]);
-
   const [defaultSelectCategory, setDefaultSelectCategory] = useState();
   const [defaultSelectBrand, setDefaultSelectBrand] = useState();
 
@@ -34,7 +31,7 @@ function Category() {
       showLoading();
       try {
         axios
-          .get('http://localhost:5000/category')
+          .get(`${process.env.REACT_APP_API_URL}category`)
           .then((response) => {
             response[0].data?.forEach((element) => {
               arrCategorys = [...arrCategorys, element.categoryNames];
@@ -78,11 +75,6 @@ function Category() {
   }, [brands]);
 
   useEffect(() => {
-    if (window.location.href.includes('product') || window.location.href.includes('edit')) {
-      setDisableMenu(true);
-    } else {
-      setDisableMenu(false);
-    }
     const selectCategory = searchParams.get('category');
     const selectBrand = searchParams.get('brand');
     setDefaultSelectCategory(selectCategory || '');
@@ -135,7 +127,7 @@ function Category() {
           width: '100%',
           fontWeight: 'bold',
         }}
-        disabled={disableMenu}
+        disabled={isDisableContext}
         selectedKeys={[defaultSelectCategory]}
         defaultOpenKeys={['category']}
         mode="inline"
@@ -147,7 +139,7 @@ function Category() {
           width: '100%',
           fontWeight: 'bold',
         }}
-        disabled={disableMenu}
+        disabled={isDisableContext}
         selectedKeys={[defaultSelectBrand]}
         defaultOpenKeys={['brand']}
         mode="inline"

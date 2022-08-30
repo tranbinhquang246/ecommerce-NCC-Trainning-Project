@@ -25,7 +25,7 @@ function FormData({ form }) {
       let arrBrandsValues = [];
       try {
         await axios
-          .get('http://localhost:5000/category')
+          .get(`${process.env.REACT_APP_API_URL}category`)
           .then((response) => {
             response[0].data?.forEach((element) => {
               arrCategorys = [...arrCategorys, element.categoryNames];

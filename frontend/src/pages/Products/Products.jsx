@@ -1,12 +1,14 @@
 /* eslint-disable no-tabs */
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useRef, useState, useContext,
+} from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { useSearchParams } from 'react-router-dom';
 import axios from '../../api/axios';
 import ViewProduct from '../../components/ViewProducts/ViewProduct';
-import Empty from '../Empty/Empty';
+import Empty from '../../components/Empty/Empty';
 import useLoading from '../../hooks/useLoading';
+import { DisableMenuContext } from '../../layout/MainLayout';
 
 function Products() {
   const [dataProducts, setDataProducts] = useState([]);
@@ -15,10 +17,12 @@ function Products() {
   const [message, setMessage] = useState(searchParams.get('search'));
   const ruleAdmin = false;
   const typingTimoutRef = useRef(null);
+  const { setIsDisableContext } = useContext(DisableMenuContext);
 
   useEffect(() => {
     const fetchData = async () => {
       showLoading();
+      setIsDisableContext(false);
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}products?category=${

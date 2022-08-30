@@ -46,7 +46,7 @@ function ModalAdd(props) {
     formData.append('mainImg', values.mainImg.file);
     axios({
       method: 'post',
-      url: 'http://localhost:5000/products',
+      url: `${process.env.REACT_APP_API_URL}products`,
       data: formData,
       headers: { 'Content-Type': 'multipart/form-data' },
     })

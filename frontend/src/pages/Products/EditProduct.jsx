@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Form } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { DisableMenuContext } from '../../layout/MainLayout';
 import FormDataAdd from '../../components/Form/FormData';
 import axios from '../../api/axios';
 import MainImage from '../../components/ImageEdit/MainImage';
@@ -11,6 +12,7 @@ import useLoading from '../../hooks/useLoading';
 function EditProduct() {
   const location = useLocation();
   const [showLoading, hideLoading] = useLoading();
+  const { setIsDisableContext } = useContext(DisableMenuContext);
   const [dataProduct, setDataProduct] = useState();
   const idProduct = location.pathname.replace('/edit/', '');
   const [img, setImg] = useState(['', '', '', '', '']);
@@ -20,6 +22,7 @@ function EditProduct() {
   const [form] = Form.useForm();
 
   useEffect(() => {
+    setIsDisableContext(true);
     const fetchData = async () => {
       showLoading();
       try {
@@ -82,8 +85,8 @@ function EditProduct() {
             onFinishFailed={onFinishFailed}
             initialValues={{
               name: dataProduct?.name,
-              category: dataProduct?.category,
-              brand: dataProduct?.brand,
+              category: dataProduct?.categoryName,
+              brand: dataProduct?.brandName,
               price: dataProduct?.price,
               description: dataProduct?.description,
             }}
@@ -125,7 +128,7 @@ function EditProduct() {
                   <p className="h-[40px]">Ảnh slide</p>
                   <div className="h-[94%] w-full grid xl:grid-cols-2 xl:grid-rows-2 grid-cols-1 grid-rows-1">
                     {dataProduct?.slidesImg.map((element, index) => (
-                      <div className="flex flex-col w-full h-full">
+                      <div className="flex flex-col w-full h-full" key={Math.random()}>
                         <p className="h-[10px]">Ảnh {index + 1}</p>
                         <div className="w-full flex justify-center items-center ">
                           <div className="w-[192px] h-[118px]">

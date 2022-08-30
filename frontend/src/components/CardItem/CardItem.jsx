@@ -25,13 +25,13 @@ function CardItem({
         <div className="flex w-full h-[31px] justify-around items-center">
           <Link
             to={`/edit/${element._id}`}
-            className="flex justify-center items-center bg-[#6ECB63] w-2/6 h-full rounded-sm hover:text-white text-[14px] text-black"
+            className="flex justify-center items-center bg-[#6ECB63] w-[94px] h-full rounded-sm text-[14px] text-white hover:text-white"
           >
             <button type="button">Cập nhật</button>
           </Link>
           <button
             type="button"
-            className="flex justify-center items-center bg-[#FF4D4D] w-2/6 h-full rounded-sm hover:text-white text-[14px]"
+            className="flex justify-center items-center bg-[#FF4D4D] w-[94px] h-full rounded-sm text-[14px] text-white"
             onClick={(event) => handleClickDelete(event, element._id, element.name)}
           >
             Xóa

@@ -15,10 +15,10 @@ export class Product {
   brand: string;
 
   @Prop()
-  valueCategory: string;
+  categoryName: string;
 
   @Prop()
-  valueBrand: string;
+  brandName: string;
 
   @Prop()
   price: number;

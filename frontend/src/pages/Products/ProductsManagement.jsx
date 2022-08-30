@@ -1,13 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useState, useEffect, useRef, useContext,
+} from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
 import axios from '../../api/axios';
 import ViewProduct from '../../components/ViewProducts/ViewProduct';
 import ModalAdd from '../../components/Modal/ModalAdd';
 import ModalSuccess from '../../components/Modal/ModalSuccess';
-import Empty from '../Empty/Empty';
+import Empty from '../../components/Empty/Empty';
 import ModalError from '../../components/Modal/ModalError';
 import useLoading from '../../hooks/useLoading';
+import { DisableMenuContext } from '../../layout/MainLayout';
 
 function ProductsManagement() {
   const [dataProducts, setDataProducts] = useState([]);
@@ -20,10 +23,12 @@ function ProductsManagement() {
   const ruleAdmin = true;
   const [showLoading, hideLoading] = useLoading();
   const [action, setAction] = useState('');
+  const { setIsDisableContext } = useContext(DisableMenuContext);
 
   useEffect(() => {
     const fetchData = async () => {
       showLoading();
+      setIsDisableContext(false);
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}products?category=${

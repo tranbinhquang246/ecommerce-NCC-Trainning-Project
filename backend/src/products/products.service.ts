@@ -93,14 +93,14 @@ export class ProductsService {
     }
     this.getCategory().then(function (result) {
       result[0]?.data.map((element) => {
+        console.log('element', element);
+        console.log('findProduct.category', findProduct.category);
         if (findProduct.category === element['categoryValues']) {
-          findProduct.valueCategory = findProduct.category;
-          findProduct.category = element['categoryNames'];
+          findProduct.categoryName = element['categoryNames'];
         }
         (element['brandValues'] as Category[]).map((value, index) => {
           if (findProduct.brand === String(value)) {
-            findProduct.valueBrand = findProduct.brand;
-            findProduct.brand = element['brandNames'][index];
+            findProduct.brandName = element['brandNames'][index];
           }
         });
       });
