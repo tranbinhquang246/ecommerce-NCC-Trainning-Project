@@ -25,9 +25,11 @@ function ModalAdd(props) {
   const [fileList, setFileList] = useState([]);
 
   const uploadButton = (
-    <div className="">
+    <div className="flex flex-col justify-center items-center">
       <GrFormAdd />
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <div style={{ marginTop: 8 }}>
+        Thêm <br /> hình ảnh
+      </div>
     </div>
   );
 
@@ -40,7 +42,7 @@ function ModalAdd(props) {
     formData.append('category', values.category);
     formData.append('brand', values.brand);
     formData.append('price', values.price);
-    formData.append('description', values.description);
+    formData.append('description', values.description || '');
     formData.append('mainImg', values.mainImg.file);
     axios({
       method: 'post',
@@ -92,7 +94,7 @@ function ModalAdd(props) {
               </div>
             </IconContext.Provider>
           </div>
-          <div className="flex justify-center w-5/6 overflow-scroll mb-2 mt-2">
+          <div className="flex justify-center w-5/6 mb-2 mt-2">
             <Form
               className="w-[500px]"
               name="basic"

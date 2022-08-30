@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
 import axios from '../../api/axios';
-import ViewProduct from './ViewProduct';
+import ViewProduct from '../../components/ViewProducts/ViewProduct';
 import ModalAdd from '../../components/Modal/ModalAdd';
 import ModalSuccess from '../../components/Modal/ModalSuccess';
 import Empty from '../Empty/Empty';
@@ -66,9 +66,9 @@ function ProductsManagement() {
     }, 500);
   };
   return (
-    <div className="flex justify-center items-center w-[81.3%] h-full bg-slate-200">
-      <div className="flex flex-col w-[83.7%] h-divproduct">
-        <div className="flex justify-between items-center w-full h-[10%]">
+    <div className="flex justify-center items-center w-full h-full bg-slate-200">
+      <div className="flex flex-col w-[81%] mt-[38px] mb-[49px] ml-[94px] mr-[96px]">
+        <div className="flex justify-between items-center w-full h-[48px] mb-[38px]">
           <button
             type="button"
             className=" hover:bg-[#00CCFF] hover:text-white text-[#00CCFF] py-[0.3rem] px-4 rounded-md border border-[#00CCFF]"
@@ -97,7 +97,7 @@ function ProductsManagement() {
             </form>
           </div>
         </div>
-        <div className="flex justify-center items-center w-full h-[90%]">
+        <div className="flex flex-col justify-center items-center w-full min-h-[743px] bg-white pt-[46px] pb-[50px] pl-[56px] pr-[56px] rounded-md">
           {dataProducts.data?.length === 0 ? (
             <Empty />
           ) : (

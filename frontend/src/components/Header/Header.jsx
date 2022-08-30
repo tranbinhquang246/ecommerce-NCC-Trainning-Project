@@ -4,7 +4,7 @@ import logo from '../../assets/logo.png';
 
 function Header() {
   return (
-    <div className="flex w-full h-[6.5%] bg-[#00ADE8] text-white">
+    <div className="flex w-full h-[64px] bg-[#00ADE8] text-white z-50 min-w-[600px]">
       <div className=" flex justify-center items-center w-divlogo h-full">
         <img src={logo} alt="logo" className="mr-1 h-[20px] w-[20px] md:h-1/2 md:w-[30px]" />
         <strong className="text-white text-lg md:text-2xl font-petrona">NCC</strong>

@@ -9,9 +9,9 @@ function MainLayout() {
   //   const [openModalAdd, setOpenModalAdd] = useState(false);
 
   return (
-    <div className="relative flex flex-col h-screen">
+    <div className="relative flex flex-col w-full h-full">
       <Header />
-      <div className="w-full h-[93.5%] flex">
+      <div className="w-full h-full flex">
         <Category />
         <Outlet />
         {/* <Outlet context={[setOpenModalAdd]} /> */}

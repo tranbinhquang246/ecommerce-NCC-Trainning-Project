@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import addIcon from '../../assets/addIcon.png';
+import 'react-toastify/dist/ReactToastify.css';
 
 function SlideImage({
   urlImg, index, slidesImg, setSlidesImg, poisitisons, setPoisitions,
@@ -7,13 +9,27 @@ function SlideImage({
   const [image, setImage] = useState(urlImg);
   const slidesImage = slidesImg;
   const poisitionImage = poisitisons;
-  const handleChangeFile = (e) => {
-    const file = e.target.files[0];
-    slidesImage[index] = file;
-    setSlidesImg(slidesImg);
-    poisitionImage[index] = 'update';
-    setPoisitions(poisitisons);
-    setImage(URL.createObjectURL(file));
+  const handleChangeFile = async (e) => {
+    const file = await e.target.files[0];
+    const nameFile = file?.name;
+    const formatFile = nameFile?.substring(nameFile.lastIndexOf('.') + 1).toLowerCase();
+    if (formatFile === 'png' || formatFile === 'jpeg' || formatFile === 'jpg') {
+      slidesImage[index] = file;
+      setSlidesImg(slidesImg);
+      poisitionImage[index] = 'update';
+      setPoisitions(poisitisons);
+      setImage(URL.createObjectURL(file));
+    } else {
+      toast.error('Vui lòng chọn 1 hình ảnh', {
+        position: 'bottom-right',
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
   const deleteImg = () => {
     slidesImage[index] = '';
@@ -34,7 +50,13 @@ function SlideImage({
               htmlFor={index}
             >
               Cập nhật
-              <input id={index} type="file" onChange={handleChangeFile} hidden />
+              <input
+                id={index}
+                type="file"
+                accept=".png,.jpg,.jpeg"
+                onChange={handleChangeFile}
+                hidden
+              />
             </label>
 
             <button
@@ -48,7 +70,7 @@ function SlideImage({
         </div>
       ) : (
         <label
-          className="flex justify-center items-center w-full h-full cursor - pointer"
+          className="flex justify-center items-center w-full h-full cursor-pointer"
           htmlFor={index}
         >
           <img className="w-[40%] h-[60%] object-full" src={addIcon} alt="" />

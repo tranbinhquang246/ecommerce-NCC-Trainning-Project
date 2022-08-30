@@ -12,31 +12,33 @@ function CardItem({
 
   return (
     <div
-      className="flex flex-col h-full w-full border border-[#BABABA]/50 shadow-lg rounded-md bg-white pt-2 pb-2 pr-3 pl-3"
+      className="flex flex-col justify-center items-center h-[259px] w-[259px] border border-[#BABABA]/50 shadow-lg rounded-md bg-white pt-[10px] pb-[18px] pr-[16px] pl-[16px]"
       key={element._id}
     >
-      <Link to={`/product/${element._id}`} className="w-full h-[75%]">
+      <Link to={`/product/${element._id}`} className="w-full h-[140px]">
         <img className="w-full h-full rounded-t-md" alt={index} src={element.mainImg} />
       </Link>
-      <h5 className="font-medium h-[10%] w-full ml-1 text-[15px] text-[#171B2F]">{element.name}</h5>
+      <h5 className="font-medium h-[27px] w-[209px] mt-[27px] text-[15px] text-[#171B2F] overflow-hidden whitespace-nowrap text-ellipsis">
+        {element.name}
+      </h5>
       {ruleAdmin ? (
-        <div className="flex h-[15%] w-full justify-around items-center">
+        <div className="flex w-full h-[31px] justify-around items-center">
           <Link
             to={`/edit/${element._id}`}
-            className="flex justify-center items-center bg-[#6ECB63] w-2/6 h-[80%] rounded-sm hover:text-white text-[1.5vh] text-black"
+            className="flex justify-center items-center bg-[#6ECB63] w-2/6 h-full rounded-sm hover:text-white text-[14px] text-black"
           >
             <button type="button">Cập nhật</button>
           </Link>
           <button
             type="button"
-            className="flex justify-center items-center bg-[#FF4D4D] w-2/6 h-[80%] rounded-sm hover:text-white text-[1.5vh]"
+            className="flex justify-center items-center bg-[#FF4D4D] w-2/6 h-full rounded-sm hover:text-white text-[14px]"
             onClick={(event) => handleClickDelete(event, element._id, element.name)}
           >
             Xóa
           </button>
         </div>
       ) : (
-        <p className="font-light ml-1 text-xs h-[15%] text-[#62677A]">$ {element.price}</p>
+        <p className="font-light w-full ml-1 text-xs text-[#62677A]">$ {element.price}</p>
       )}
     </div>
   );

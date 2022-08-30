@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { Modal } from 'antd';
 import { useSearchParams } from 'react-router-dom';
@@ -19,24 +20,21 @@ function ModalCautionDelete(props) {
     await axios({
       method: 'delete',
       url: `http://localhost:5000/products/${idProduct}`,
-    })
-      .then(async () => {
-        const response = await axios.get(
+    }).then(async (response) => {
+      if (response) {
+        const dataProducts = await axios.get(
           `${process.env.REACT_APP_API_URL}products?category=${
             searchParams.get('category') || ''
           }&brand=${searchParams.get('brand') || ''}&page=${
             searchParams.get('page') || '1'
           }&searchWord=${searchParams.get('search') || ''}`,
         );
-
-        setDataProducts(response);
+        setDataProducts(dataProducts);
         setAction('delete');
         setIsModalVisible(false);
         setIsModalSuccessVisible(true);
-      })
-      .catch((response) => {
-        console.log(response);
-      });
+      }
+    });
   };
 
   const handleCancel = () => {

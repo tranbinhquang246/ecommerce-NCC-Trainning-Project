@@ -17,6 +17,7 @@ function Category() {
   const [valuebrands, setValueBrands] = useState([]);
   const [brand, setBrand] = useState([]);
   const [valueBrand, setValueBrand] = useState([]);
+  const [disableMenu, setDisableMenu] = useState([]);
 
   const [defaultSelectCategory, setDefaultSelectCategory] = useState();
   const [defaultSelectBrand, setDefaultSelectBrand] = useState();
@@ -77,6 +78,11 @@ function Category() {
   }, [brands]);
 
   useEffect(() => {
+    if (window.location.href.includes('product') || window.location.href.includes('edit')) {
+      setDisableMenu(true);
+    } else {
+      setDisableMenu(false);
+    }
     const selectCategory = searchParams.get('category');
     const selectBrand = searchParams.get('brand');
     setDefaultSelectCategory(selectCategory || '');
@@ -122,13 +128,14 @@ function Category() {
     setSearchParams(searchParams);
   };
   return (
-    <div className="h-full w-[18.7%] overflow-x-hidden overflow-y-scroll">
+    <div className="min-w-[200px] w-[269px] overflow-x-hidden overflow-y-scroll">
       <Menu
         onClick={onClickCategory}
         style={{
           width: '100%',
           fontWeight: 'bold',
         }}
+        disabled={disableMenu}
         selectedKeys={[defaultSelectCategory]}
         defaultOpenKeys={['category']}
         mode="inline"
@@ -140,6 +147,7 @@ function Category() {
           width: '100%',
           fontWeight: 'bold',
         }}
+        disabled={disableMenu}
         selectedKeys={[defaultSelectBrand]}
         defaultOpenKeys={['brand']}
         mode="inline"

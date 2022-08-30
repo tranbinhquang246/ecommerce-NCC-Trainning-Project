@@ -72,11 +72,11 @@ function EditProduct() {
   };
 
   return (
-    <div className="flex justify-center items-center w-[81.3%] h-full bg-slate-200">
-      <div className="flex justify-center items-center w-[83.7%] h-divproduct bg-white pl-10 pr-10 pt-5 pb-5 rounded-lg">
+    <div className="flex justify-center items-center w-full h-full bg-slate-200">
+      <div className="flex flex-col w-[81%] mt-[38px] mb-[49px] ml-[94px] mr-[96px]">
         {dataProduct ? (
           <Form
-            className="flex w-full h-full bg-white overflow-y-scroll"
+            className="flex w-full h-full bg-white overflow-y-scroll "
             layout="vertical"
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
@@ -89,49 +89,60 @@ function EditProduct() {
             }}
             form={form}
           >
-            <div className="flex flex-col w-1/2">
-              <strong className="mb-2 text-sm">Thông tin sản phẩm</strong>
-              <FormDataAdd form={form} />
-              <div className="flex justify-around items-center">
-                <button
-                  className="w-1/3 h-[40px] border border-sky-500 text-sky-500 pl-5 pr-5"
-                  type="button"
-                  onClick={() => {
-                    navigate(-1);
-                  }}
-                >
-                  Hủy
-                </button>
-                <button className="w-1/3 h-[40px] bg-sky-500 text-white" type="submit">
-                  Lưu
-                </button>
+            <div className="flex w-full h-full p-[21px]">
+              <div className="flex flex-col w-1/2">
+                <strong className="mb-2 text-sm">Thông tin sản phẩm</strong>
+                <FormDataAdd form={form} />
+                <div className="flex justify-around items-center">
+                  <button
+                    className="w-1/3 h-[40px] border border-sky-500 text-sky-500 pl-5 pr-5"
+                    type="button"
+                    onClick={() => {
+                      navigate(-1);
+                    }}
+                  >
+                    Hủy
+                  </button>
+                  <button className="w-1/3 h-[40px] bg-sky-500 text-white" type="submit">
+                    Lưu
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col w-1/2 h-full pl-2 ">
-              <div className="flex flex-col w-full h-[50%] p-2">
-                <p className="h-[5%]">Ảnh minh họa</p>
-                <MainImage
-                  avatar={dataProduct?.mainImg}
-                  mainImg={img}
-                  setMainImg={setImg}
-                  poisitisons={poisitisons}
-                  setPoisitions={setPoisitions}
-                />
-              </div>
-              <div className="flex flex-col w-full h-[50%] p-2">
-                <p className="h-[6%]">Ảnh slide</p>
-                <div className="h-[94%] w-full grid grid-cols-2 grid-rows-2">
-                  {dataProduct?.slidesImg.map((element, index) => (
-                    <SlideImage
-                      key={Math.random()}
-                      urlImg={element}
-                      index={index + 1}
-                      slidesImg={img}
-                      setSlidesImg={setImg}
+              <div className="flex flex-col w-1/2 h-full pl-2 ">
+                <div className="flex flex-col w-full p-2">
+                  <p className="h-[10px]">Ảnh minh họa</p>
+                  <div className="h-[216px]">
+                    <MainImage
+                      avatar={dataProduct?.mainImg}
+                      mainImg={img}
+                      setMainImg={setImg}
                       poisitisons={poisitisons}
                       setPoisitions={setPoisitions}
                     />
-                  ))}
+                  </div>
+                </div>
+                <div className="flex flex-col w-full p-2">
+                  <p className="h-[40px]">Ảnh slide</p>
+                  <div className="h-[94%] w-full grid xl:grid-cols-2 xl:grid-rows-2 grid-cols-1 grid-rows-1">
+                    {dataProduct?.slidesImg.map((element, index) => (
+                      <div className="flex flex-col w-full h-full">
+                        <p className="h-[10px]">Ảnh {index + 1}</p>
+                        <div className="w-full flex justify-center items-center ">
+                          <div className="w-[192px] h-[118px]">
+                            <SlideImage
+                              key={Math.random()}
+                              urlImg={element}
+                              index={index + 1}
+                              slidesImg={img}
+                              setSlidesImg={setImg}
+                              poisitisons={poisitisons}
+                              setPoisitions={setPoisitions}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

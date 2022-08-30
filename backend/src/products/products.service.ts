@@ -129,7 +129,6 @@ export class ProductsService {
     if (!deletedProduct) {
       throw new NotFoundException(`Product #${productId} does not exist`);
     }
-    // fs.unlinkSync(`uploads/${deletedProduct.ma}`);
     const mainImg = deletedProduct.mainImg;
     const slidesImg = deletedProduct.slidesImg;
     fs.unlinkSync(`uploads/${mainImg.substring(mainImg.lastIndexOf('/') + 1)}`);
