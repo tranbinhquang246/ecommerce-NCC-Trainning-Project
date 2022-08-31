@@ -121,7 +121,7 @@ function ProductDetail() {
             <Carosel mainImg={dataProduct?.mainImg} slidesImg={[dataProduct?.slidesImg]} />
           </div>
         </div>
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full mt-5">
           <h5>Gợi ý cho bạn</h5>
           <div
             className="grid gap-x-3 gap-y-5 w-full h-[95%] justify-items-center"

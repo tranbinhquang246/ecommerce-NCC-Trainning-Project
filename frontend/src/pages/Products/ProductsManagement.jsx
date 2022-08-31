@@ -71,7 +71,7 @@ function ProductsManagement() {
   }, [dataProducts]);
 
   const handleChangeSearch = (e) => {
-    const valueSearch = e.target.value.replace(/[^a-z 0-9]/gi, '');
+    const valueSearch = e.target.value.replace(/[^a-z 0-9]/gi, '').trimStart();
     setSearchKeyWord(valueSearch);
     if (typingTimoutRef.current) {
       clearTimeout(typingTimoutRef.current);
@@ -101,7 +101,7 @@ function ProductsManagement() {
               placeholder="Search"
               required
               name="search"
-              defaultValue={searchKeyWord}
+              value={searchKeyWord}
               onChange={handleChangeSearch}
               prefix={<BsSearch />}
             />
