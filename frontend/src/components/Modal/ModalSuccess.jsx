@@ -1,19 +1,12 @@
 import React from 'react';
 import { Modal } from 'antd';
-import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '../../assets/deleteIcon.png';
 import SusscessIcon from '../../assets/successIcon.png';
 
 function ModalSuccess(props) {
-  const {
-    rule, idProduct, isModalSuccessVisible, setIsModalSuccessVisible,
-  } = props;
-  const navigate = useNavigate();
+  const { rule, isModalSuccessVisible, setIsModalSuccessVisible } = props;
 
-  const handleAddOk = () => {
-    navigate(`/product/${idProduct}`);
-    setIsModalSuccessVisible(false);
-  };
+  const handleAddOk = () => {};
   const handleUpdateOk = () => {};
   const handleDeleteOk = async () => {
     setIsModalSuccessVisible(false);

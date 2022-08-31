@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import ModalCautionDelete from '../Modal/ModalCautionDelete';
 import PaginationPage from '../Pagination/PaginationPage';

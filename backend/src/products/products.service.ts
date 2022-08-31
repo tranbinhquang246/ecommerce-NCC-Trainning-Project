@@ -62,16 +62,12 @@ export class ProductsService {
     const limit = 3;
     const { category, brand } = recommendProduct;
     const filter = {
-      $or: [
-        brand ? { brand: brand } : {},
-        category ? { category: category } : {},
-      ],
+      $or: [category ? { category: category } : {}],
     };
-    const findProduct = await this.productModel
-      .find(filter)
-      .limit(limit)
-      .sort({ price: 1 })
-      .exec();
+    const findProduct = await this.productModel.aggregate([
+      { $sample: { size: 3 } },
+    ]);
+
     if (!findProduct) {
       throw new NotFoundException(`Not found`);
     }

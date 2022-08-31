@@ -29,7 +29,7 @@ function ProductDetail() {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}products/${idProduct}`);
         setDataProduct(response);
       } catch (error) {
-        toast.error(error.message, {
+        toast.error('Không thể lấy thông tin sản phẩm', {
           position: 'bottom-right',
           autoClose: 1500,
           hideProgressBar: false,
@@ -53,7 +53,7 @@ function ProductDetail() {
           );
           setDataRecommendProduct(response.data);
         } catch (error) {
-          toast.error(error.message, {
+          toast.error('Không thể lấy sản phẩm đề xuẩt', {
             position: 'bottom-right',
             autoClose: 1500,
             hideProgressBar: false,
@@ -81,7 +81,7 @@ function ProductDetail() {
           </button>
         </div>
         <div className="grid gird-cols-1 lg:grid-cols-2 w-full min-h-[316px]">
-          <div className="flex flex-col h-full w-full p-2 min-h-[316px]">
+          <div className="flex flex-col h-full w-full p-2 max-h-[316px]">
             <div className="flex w-full h-[10%] bg-slate-200 rounded-t-md">
               <div className="flex justify-start items-center w-1/3 h-full pl-5">Tên sản phẩm</div>
               <h5 className="font-medium w-2/3 ml-5 text-[15px] text-[#171B2F] overflow-hidden whitespace-nowrap text-ellipsis">
@@ -110,12 +110,14 @@ function ProductDetail() {
               <div className="flex justify-start items-center w-1/3 h-full pl-5">
                 Mô tả sản phẩm
               </div>
-              <div className="flex justify-start items-center w-2/3 h-full pl-2 pr-2 overflow-y-scroll overflow-x-hidden">
-                {dataProduct?.description}
+              <div className="flex justify-start items-center w-2/3 h-full pl-2 pt-2 pb-2">
+                <div className="w-full h-full overflow-y-scroll overflow-x-hidden">
+                  {dataProduct?.description}
+                </div>
               </div>
             </div>
           </div>
-          <div className="h-full w-full pl-2 max-h-[316px]">
+          <div className="h-full w-full pl-2 max-h-[316px] pt-2">
             <Carosel mainImg={dataProduct?.mainImg} slidesImg={[dataProduct?.slidesImg]} />
           </div>
         </div>

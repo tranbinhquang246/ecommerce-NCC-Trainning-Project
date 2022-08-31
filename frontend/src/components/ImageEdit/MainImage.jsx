@@ -20,7 +20,7 @@ function MainImage({
       setImage(URL.createObjectURL(file));
     } else {
       toast.error('Vui lòng chọn 1 hình ảnh', {
-        position: 'bottom-right',
+        position: 'top-right',
         autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { IconContext } from 'react-icons';
-import { useSearchParams } from 'react-router-dom';
-
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Form, Modal, Upload } from 'antd';
 import { RiCloseCircleFill } from 'react-icons/ri';
 import { GrFormAdd } from 'react-icons/gr';
+import { toast } from 'react-toastify';
 import axios from '../../api/axios';
 import FormDataAdd from '../Form/FormData';
 import validateImage from '../../validateForm/validateImage';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ModalAdd(props) {
   const {
@@ -16,13 +17,13 @@ function ModalAdd(props) {
     setIsModalAddVisible,
     setIsModalSuccessVisible,
     setIsModalErrorVisible,
-    setIdProduct,
     setAction,
   } = props;
   const [isButtonShow, setIsButtonShow] = useState(true);
   const [searchParams] = useSearchParams();
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
+  const navigate = useNavigate();
 
   const uploadButton = (
     <div className="flex flex-col justify-center items-center">
@@ -58,23 +59,39 @@ function ModalAdd(props) {
             searchParams.get('page') || '1'
           }&searchWord=${searchParams.get('search') || ''}`,
         );
-        setIdProduct(response._id);
         setDataProducts(dataProduct);
         setAction('add');
         setIsModalAddVisible(false);
         setIsModalSuccessVisible(true);
-        setIsButtonShow(true);
-        setFileList([]);
-        form.resetFields();
+        setTimeout(() => {
+          navigate(`/product/${response._id}`);
+          setIsModalSuccessVisible(false);
+        }, 1000);
       })
-      .catch((response) => {
+      .catch(() => {
         setIsModalErrorVisible(true);
         setIsButtonShow(true);
-        console.log(response);
+        toast.error('Không thể thêm sản phẩm, đã có lỗi xảy ra', {
+          position: 'top-right',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
   };
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+  const onFinishFailed = () => {
+    toast.error('Vui lòng nhập đầy đủ và chính xác các trường', {
+      position: 'top-right',
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
   const handleCancel = () => {
     setIsModalAddVisible(false);

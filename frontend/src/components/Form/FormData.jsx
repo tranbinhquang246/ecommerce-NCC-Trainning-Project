@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import {
   Form, Input, Select, InputNumber,
 } from 'antd';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from '../../api/axios';
 import validatePrice from '../../validateForm/validatePrice';
 import validateName from '../../validateForm/validateName';
@@ -41,7 +43,15 @@ function FormData({ form }) {
             setValueBrands(arrBrandsValues);
           });
       } catch (error) {
-        console.error(error.message);
+        toast.error('Đã có lỗi xảy ra, không thể lấy category', {
+          position: 'top-right',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     };
     fetchData();

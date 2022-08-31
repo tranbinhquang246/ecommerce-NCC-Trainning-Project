@@ -1,8 +1,10 @@
 import React, {
   useState, useEffect, useRef, useContext,
 } from 'react';
+import { Input } from 'antd';
 import { useSearchParams } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
+import { toast } from 'react-toastify';
 import axios from '../../api/axios';
 import ViewProduct from '../../components/ViewProducts/ViewProduct';
 import ModalAdd from '../../components/Modal/ModalAdd';
@@ -11,10 +13,10 @@ import Empty from '../../components/Empty/Empty';
 import ModalError from '../../components/Modal/ModalError';
 import useLoading from '../../hooks/useLoading';
 import { DisableMenuContext } from '../../layout/MainLayout';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ProductsManagement() {
   const [dataProducts, setDataProducts] = useState([]);
-  const [idProduct, setIdProduct] = useState([]);
   const [isModalAddVisible, setIsModalAddVisible] = useState(false);
   const [isModalSuccessVisible, setIsModalSuccessVisible] = useState(false);
   const [isModalErrorVisible, setIsModalErrorVisible] = useState(false);
@@ -24,6 +26,7 @@ function ProductsManagement() {
   const [showLoading, hideLoading] = useLoading();
   const [action, setAction] = useState('');
   const { setIsDisableContext } = useContext(DisableMenuContext);
+  const [searchKeyWord, setSearchKeyWord] = useState(searchParams.get('search') || '');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +42,15 @@ function ProductsManagement() {
         );
         setDataProducts(response);
       } catch (error) {
-        console.error(error.message);
+        toast.error('Đã có lỗi xảy ra', {
+          position: 'top-right',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } finally {
         hideLoading();
       }
@@ -60,7 +71,8 @@ function ProductsManagement() {
   }, [dataProducts]);
 
   const handleChangeSearch = (e) => {
-    const valueSearch = e.target.value;
+    const valueSearch = e.target.value.replace(/[^a-z 0-9]/gi, '');
+    setSearchKeyWord(valueSearch);
     if (typingTimoutRef.current) {
       clearTimeout(typingTimoutRef.current);
     }
@@ -81,25 +93,18 @@ function ProductsManagement() {
           >
             Thêm sản phẩm
           </button>
-          <div className="flex justify-center items-center">
-            <form className="flex items-center" onChange={handleChangeSearch}>
-              <label htmlFor="simple-search">
-                <div className="relative w-full">
-                  <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                    <BsSearch />
-                  </div>
-                  <input
-                    type="text"
-                    id="simple-search"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-1  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Search"
-                    required
-                    name="search"
-                    defaultValue={searchParams.get('search') || ''}
-                  />
-                </div>
-              </label>
-            </form>
+
+          <div className="w-1/3">
+            <Input
+              type="text"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-1  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search"
+              required
+              name="search"
+              defaultValue={searchKeyWord}
+              onChange={handleChangeSearch}
+              prefix={<BsSearch />}
+            />
           </div>
         </div>
         <div className="flex flex-col justify-center items-center w-full min-h-[743px] bg-white pt-[46px] pb-[50px] pl-[56px] pr-[56px] rounded-md">
@@ -122,12 +127,10 @@ function ProductsManagement() {
         setIsModalAddVisible={setIsModalAddVisible}
         setIsModalSuccessVisible={setIsModalSuccessVisible}
         setIsModalErrorVisible={setIsModalErrorVisible}
-        setIdProduct={setIdProduct}
         setAction={setAction}
       />
       <ModalSuccess
         rule={action}
-        idProduct={idProduct}
         isModalSuccessVisible={isModalSuccessVisible}
         setIsModalSuccessVisible={setIsModalSuccessVisible}
       />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Form } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { DisableMenuContext } from '../../layout/MainLayout';
 import FormDataAdd from '../../components/Form/FormData';
 import axios from '../../api/axios';
@@ -8,6 +9,7 @@ import MainImage from '../../components/ImageEdit/MainImage';
 import SlideImage from '../../components/ImageEdit/SlideImage';
 import ModalSuccess from '../../components/Modal/ModalSuccess';
 import useLoading from '../../hooks/useLoading';
+import 'react-toastify/dist/ReactToastify.css';
 
 function EditProduct() {
   const location = useLocation();
@@ -29,7 +31,15 @@ function EditProduct() {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}products/${idProduct}`);
         setDataProduct(response);
       } catch (error) {
-        console.error(error.message);
+        toast.error('Không thể lấy thông tin sản phẩm', {
+          position: 'top-right',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } finally {
         hideLoading();
       }
@@ -65,13 +75,29 @@ function EditProduct() {
           setIsModalSuccessVisible(false);
         }, 1000);
       })
-      .catch((response) => {
-        console.log(response);
+      .catch(() => {
+        toast.error('Đã có lỗi xảy ra, không thể cập nhật hình ảnh', {
+          position: 'top-right',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo.values);
+  const onFinishFailed = () => {
+    toast.error('Vui lòng nhập đầy đủ các trường', {
+      position: 'top-right',
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   return (

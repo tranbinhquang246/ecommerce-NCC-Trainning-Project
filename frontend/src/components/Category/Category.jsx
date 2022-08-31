@@ -2,6 +2,8 @@
 import { Menu } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from '../../api/axios';
 import useLoading from '../../hooks/useLoading';
 import './index.css';
@@ -53,7 +55,15 @@ function Category({ isDisableContext }) {
             setValueBrands(arrBrandValues?.map((element) => ['', ...element]));
           });
       } catch (error) {
-        console.error(error.message);
+        toast.error('Đã có lỗi không thể lấy được category', {
+          position: 'top-right',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } finally {
         hideLoading();
       }
