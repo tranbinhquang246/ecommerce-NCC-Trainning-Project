@@ -83,31 +83,42 @@ function ProductDetail() {
         <div className="grid gird-cols-1 lg:grid-cols-2 w-full min-h-[316px]">
           <div className="flex flex-col h-full w-full p-2 max-h-[316px]">
             <div className="flex w-full h-[10%] bg-slate-200 rounded-t-md">
-              <div className="flex justify-start items-center w-1/3 h-full pl-5">Tên sản phẩm</div>
+              <div className="flex justify-start items-center w-1/3 h-full pl-5 overflow-hidden whitespace-nowrap">
+                Tên sản phẩm
+              </div>
               <h5 className="font-medium w-2/3 ml-5 text-[15px] text-[#171B2F] overflow-hidden whitespace-nowrap text-ellipsis">
                 {dataProduct?.name}
               </h5>
             </div>
             <div className="flex w-full h-[10%]">
-              <div className="flex justify-start items-center w-1/3 h-full pl-5">Danh mục</div>
+              <div className="flex justify-start items-center w-1/3 h-full pl-5 overflow-hidden whitespace-nowrap">
+                Danh mục
+              </div>
               <h5 className="font-medium w-2/3 ml-5 text-[15px] text-[#171B2F] overflow-hidden whitespace-nowrap text-ellipsis">
                 {dataProduct?.categoryName}
               </h5>
             </div>
             <div className="flex w-full h-[10%] bg-slate-200">
-              <div className="flex justify-start items-center w-1/3 h-full pl-5">Hãng sản xuất</div>
+              <div
+                className="flex justify-start items-center w-1/3 h-full pl-5 overflow-hidden whitespace-nowrap
+"
+              >
+                Hãng sản xuất
+              </div>
               <h5 className="font-medium w-2/3 ml-5 text-[15px] text-[#171B2F] overflow-hidden whitespace-nowrap text-ellipsis">
                 {dataProduct?.brandName}
               </h5>
             </div>
             <div className="flex w-full h-[10%]">
-              <div className="flex justify-start items-center w-1/3 h-full pl-5">Giá sản phẩm</div>
+              <div className="flex justify-start items-center w-1/3 h-full pl-5 overflow-hidden whitespace-nowrap">
+                Giá sản phẩm
+              </div>
               <h5 className="font-medium w-2/3 ml-5 text-[15px] text-[#171B2F] overflow-hidden whitespace-nowrap text-ellipsis">
                 $ {dataProduct?.price}
               </h5>
             </div>
             <div className="flex w-full h-[60%] bg-slate-200 rounded-b-md">
-              <div className="flex justify-start items-center w-1/3 h-full pl-5">
+              <div className="flex justify-start items-center w-1/3 h-full pl-5 overflow-hidden whitespace-nowrap">
                 Mô tả sản phẩm
               </div>
               <div className="flex justify-start items-center w-2/3 h-full pl-2 pt-2 pb-2">

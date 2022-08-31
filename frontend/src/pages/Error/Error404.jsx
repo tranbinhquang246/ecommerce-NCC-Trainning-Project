@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { DisableMenuContext } from '../../layout/MainLayout';
-
 import image404 from '../../assets/404img.jpg';
 
 function Error404() {

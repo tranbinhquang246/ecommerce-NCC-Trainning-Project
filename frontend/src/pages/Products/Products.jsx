@@ -52,7 +52,9 @@ function Products() {
   }, [searchParams]);
 
   const handleChangeSearch = (e) => {
-    const valueSearch = e.target.value.replace(/[^a-z 0-9]/gi, '').trimStart();
+    const valueSearch = e.target.value
+      .replace(/^[`!@#$%^&*()_+/=[\]{};':"\\|,.<>?~]/, '')
+      .trimStart();
     setSearchKeyWord(valueSearch);
     if (typingTimoutRef.current) {
       clearTimeout(typingTimoutRef.current);
