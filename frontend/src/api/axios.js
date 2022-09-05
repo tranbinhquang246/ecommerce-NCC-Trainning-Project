@@ -35,7 +35,6 @@ axiosInstance.interceptors.response.use(
 
     if (statusCode === 404) {
       window.location.href = '/not-found';
-      return;
     }
 
     if (statusCode === 401) {

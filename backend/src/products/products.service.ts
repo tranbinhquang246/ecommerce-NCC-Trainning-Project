@@ -213,6 +213,7 @@ export class ProductsService {
       },
       { new: true },
     );
+    console.log('log', updateProduct);
     if (!updateProduct) {
       throw new NotFoundException(`Product #${productId} not found`);
     }

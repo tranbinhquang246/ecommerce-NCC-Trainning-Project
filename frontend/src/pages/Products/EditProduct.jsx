@@ -68,14 +68,16 @@ function EditProduct() {
       data: formData,
       headers: { 'Content-Type': 'multipart/form-data' },
     })
-      .then(async () => {
-        setIsModalSuccessVisible(true);
-        setTimeout(() => {
-          navigate('/management');
-          setIsModalSuccessVisible(false);
-        }, 1000);
+      .then((response) => {
+        console.log('log edit', response);
+        // setIsModalSuccessVisible(true);
+        // setTimeout(() => {
+        //   //   navigate('/management');
+        //   setIsModalSuccessVisible(false);
+        // }, 1000);
       })
       .catch(() => {
+        console.log('catch');
         toast.error('Đã có lỗi xảy ra, không thể cập nhật hình ảnh', {
           position: 'top-right',
           autoClose: 1500,
